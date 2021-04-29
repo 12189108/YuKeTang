@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+
+	<TextView
+		android:id="@+id/dialogeditTextView1"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="10dp"
+		android:layout_marginBottom="10dp"
+		style="@style/DialogTitleTextStyle"/>
+
+	<ImageView
+		android:background="@color/round_corner_filter_green"
+		android:layout_width="match_parent"
+		android:layout_height="1dp"
+		android:layout_marginBottom="10dp"/>
+
+	<LinearLayout
+		android:orientation="horizontal"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
+
+		<TextView
+			android:background="@drawable/im"
+			android:layout_width="wrap_content"
+			android:layout_height="match_parent"
+			android:text="  "/>
+
+		<EditText
+			android:id="@+id/dialogeditEditText1"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginRight="0dp"
+			style="@style/editstyle"/>
+
+	</LinearLayout>
+
+	<Button
+		android:textColor="@color/round_corner_filter_green"
+		android:id="@+id/dialogeditButton1"
+		android:background="@drawable/only_3"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="10dp"
+		android:text="@string/yes"/>
+
+</LinearLayout>
+

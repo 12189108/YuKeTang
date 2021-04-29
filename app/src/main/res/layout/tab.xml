@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:fitsSystemWindows="true"
+	android:orientation="vertical"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:id="@+id/tabLinearLayout">
+
+	<LinearLayout
+		android:gravity="center|left"
+		android:orientation="horizontal"
+		android:id="@+id/tabLinearLayout0"
+		android:background="@drawable/tab"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content">
+
+		<ImageView
+			android:id="@+id/tabImageView1"
+			android:background="@drawable/iconbutton"
+			android:layout_width="45dp"
+			android:layout_height="45dp"
+			android:padding="5dp"/>
+
+		<TextView
+			android:textColor="@color/white"
+			android:id="@+id/tabTextView1"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="5.0dip"/>
+
+		<LinearLayout
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:orientation="horizontal"
+			android:layout_weight="1.0"/>
+
+		<GridView
+			android:id="@+id/tabGridView"
+			android:layout_height="match_parent"
+			android:layout_width="wrap_content"/>
+
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:orientation="vertical"
+		android:id="@+id/tabLinearLayout2"
+		android:layout_weight="1.0"/>
+
+</LinearLayout>
+

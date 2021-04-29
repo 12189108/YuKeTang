@@ -1,0 +1,75 @@
+<resources>
+
+    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+		<item name="android:windowBackground">@color/bg_null</item>
+		</style>
+	<style name="welcome" parent="android:Theme.Holo.Light.Dialog">
+	</style>
+	<style name="buttonstyle">
+	    <item name="android:textColor">@color/white</item>
+		<item name="android:background">@drawable/bn_background</item>
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_height">42dip</item>
+		<item name="android:layout_marginLeft">9dip</item>
+		<item name="android:layout_marginRight">9dip</item>
+	</style>
+	<style name="textstyle">
+		<item name="android:textColor">@color/gray</item>
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:textSize">14dp</item>
+		<item name="android:gravity">center</item>
+		<item name="android:layout_marginTop">10dp</item>
+	</style>
+	<style name="editstyle">
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">50dp</item>
+		<item name="android:background">@drawable/edit_background</item>
+		<item name="android:layout_weight">1.0</item>
+		<item name="android:layout_marginRight">20dp</item>
+		<item name="android:textSize">14dp</item>
+	</style>
+	<style name="DialogTitleTextStyle">
+		<item name="android:textColor">@color/round_corner_filter_green</item>
+		<item name="android:layout_gravity">left|center|top</item>
+		<item name="android:layout_marginLeft">10dp</item>
+		<item name="android:layout_marginTop">10dp</item>
+		<item name="android:textSize">20dp</item>
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+	</style>
+	<style name="DialogImageViewStyle">
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_height">0.1dp</item>
+		<item name="android:layout_marginTop">10dp</item>
+		<item name="android:background">@color/gender_male</item>
+	</style>
+	<style name="DialogTextStyle">
+		<item name="android:textColor">@color/round_corner_filter_green</item>
+		<item name="android:layout_gravity">left|center|top</item>
+		<item name="android:layout_marginLeft">10dp</item>
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+	</style>
+	<style name="DialogButtonStyle">
+		<item name="android:textColor">@color/round_corner_filter_green</item>
+		<item name="android:layout_width">0dp</item>
+		<item name="android:textStyle">bold</item>
+		<item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+		<item name="android:layout_height">30dp</item>
+		<item name="android:layout_marginTop">10dp</item>
+		<item name="android:layout_marginBottom">10dp</item>
+		<item name="android:layout_weight">1</item>
+	</style>
+	<style name="radiobuttonstyle">
+		<item name="android:textSize">14dp</item>
+		<item name="android:textColor">@drawable/textoff</item>
+		<item name="android:gravity">center_horizontal</item>
+		<item name="android:paddingTop">5dp</item>
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:button">@null</item>
+		<item name="android:drawablePadding">2.0dp</item>
+		<item name="android:layout_weight">1.0</item>
+	</style>
+	</resources>

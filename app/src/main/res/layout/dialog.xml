@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:id="@+id/dialogLinearLayout2"
+	android:background="@drawable/dialog"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:gravity="right">
+
+	<TextView
+		android:id="@+id/dialogTextView1"
+		android:layout_marginTop="10.0dip"
+		android:layout_marginBottom="10.0dip"
+		style="@style/DialogTitleTextStyle"/>
+
+	<ImageView
+		android:id="@+id/dialogImageView1"
+		android:background="@color/gender_male"
+		android:layout_width="fill_parent"
+		android:layout_height="1.0dip"/>
+
+	<TextView
+		android:id="@+id/dialogTextView2"
+		style="@style/DialogTextStyle"
+		android:layout_marginTop="10dp"/>
+
+	<ImageView
+		android:id="@+id/dialogImageView2"
+		android:background="@color/white"
+		android:layout_width="fill_parent"
+		android:layout_height="0.100000024dip"
+		android:layout_marginTop="15.0dip"/>
+
+	<LinearLayout
+		android:orientation="horizontal"
+		android:id="@+id/dialogLinearLayout1"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content">
+
+		<Button
+			android:id="@+id/dialogButton1"
+			android:background="@drawable/dialogleftbutton"
+			style="@style/DialogButtonStyle"/>
+
+		<ImageView
+			android:id="@+id/dialogImageView3"
+			android:background="@color/white"
+			android:layout_width="0.100000024dip"
+			android:layout_height="fill_parent"/>
+
+		<Button
+			android:id="@+id/dialogButton2"
+			android:background="@drawable/dialogrightbuttom"
+			style="@style/DialogButtonStyle"/>
+
+	</LinearLayout>
+
+</LinearLayout>
+

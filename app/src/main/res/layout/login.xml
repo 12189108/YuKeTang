@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Support.EditTexts
+        android:hint="@string/cookie"
+        android:layout_marginLeft="5dp"
+        android:id="@+id/cookie"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Support.Buttons
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:text="@string/save"
+        android:onClick="save"
+        android:textColor="@color/white"
+        android:background="@drawable/bn_copy"
+        android:layout_margin="5dp"/>
+</LinearLayout>

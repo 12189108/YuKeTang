@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">雨课堂刷课工具</string>
+    <string name="exit">ex/truzu64Ubwb3m4u5UOQ==</string>
+    <string name="DTitle">ndMnQLkT382L9tuHr1GSlw==</string>
+    <string name="isexit">VBaEXmeCE/vB7x/S8myAEAEj0gTnU/YDoCcWkprCIis=</string>
+    <string name="yes">FV47J/ozN+bcx+5uWQLEtg==</string>
+    <string name="no">T8vMsDpFFhWbBZ9FlAwpfg==</string>
+	<string name="LTitle">shtuV3p3z9fPiCcPTzNOnQpJw3R5zt6wpv9n3jWBHertkI8PH3eXmOkJBdjAnkIJ</string>
+    <string name="cookie">"CDP0rxkzVZJUMBhGzW65JQ== "</string>
+    <string name="save">"AzXxQfKiuPEHldgsG5oa2w== "</string>
+    <string name="login_title">SxAJtA58R1xOzEDzYCtX8Q==</string>
+    <string name="err_cookie">O8U8nPVoC7fH+bmj5ihsPo7PrV9X0J2PXTRsf6VYbIY=</string>
+    <string name="univeristy_id">"0/7fklOX0Sib7hifFf7iEFdBn81F1WbmQuftojo3gpQ= "</string>
+    <string name="csrftoken">4Mq9iJIaLLDPSQC1JwRB+QDhYAvuVVwIDgjSNH8sSH0=</string>
+    <string name="sessionid">/ftbRQiPQ26V4vBR0zG7BQDhYAvuVVwIDgjSNH8sSH0=</string>
+    <string name="user_agent">TO3D+8DVJpQEcqkN70Mm8HtvWUnFYWY5zk0BHrTA8JgH493FYCUwdcKAVoF2QLoP+XDCqFV8V9LKw7nuRhuCg2Bmygpm9yvAWGZMhiEgSuYMWQEkdRgQFIcSrOe5yn+K++u6sja0gtbwt5PXutjwSQLswLJ1hbQX1kj6rapBJVI=</string>
+    <string name="user_id_url">Xr/ttxFi/NCQM4mxTayKlZWkIB3ufCv6XCBlZSXVAxApc+Kj72pjdj1N+liPfEWM0y9MivEWNA0toAmNhJ0uiw==</string>
+    <string name="Invalid_cookie">YqcQoQf1XBXoJ4QMptVm0yEHUXBQv2lWAGxW292AHAKpsE2FgDIDsw0vCNGk1T9M</string>
+    <string name="check_cookie">3lNJ83RWC1D8W6ire7m4KJ5eKQZTmb6WzkxAKmJx7hYgX23nYen1cWh2Cz4GK/Np</string>
+    <string name="check_fail">WX7hfxZEghwa4yo7W4aD9d/25Sn/MIHhZoGJTgE3a7EOXduzkqK4Is0WQpZNdB6o</string>
+    <string name="classrom_id_url">Xr/ttxFi/NCQM4mxTayKlR8Y0UMpihV/OyZz4gONbWc1/yGHzrhad9dC+yK9SmtAl69Q8NWcqFS4k1KS6mviKN1vp+xrVFhCZbADS+jvmPD3qq3RyGoF+QaAyfMiIIfjioGmyGl2tB5809fyXgDeqg==</string>
+    <string name="class_number">kAQ3Ufot201Z6r9AlyW5/Xge8E/QgOY+QCZUGenkuAk=</string>
+    <string name="video_id_url">Xr/ttxFi/NCQM4mxTayKlR8Y0UMpihV/OyZz4gONbWfzkuEIqxkb3DSWEgZz+0RwDDTPXjzUziqcHdEAn8ZB5eW21ONyu7HOMOH+MLsEb3PIMpH40cuvZmwUAUV7eB2eibFkC399ZAAmJri/jkJ8JQ==</string>
+</resources>

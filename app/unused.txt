@@ -1,0 +1,368 @@
+Support.PlusLoaderSupport
+waste.time.yuketang.R$id
+Support.GetSupport
+Support.SmsSupport$a
+Support.DownloadsSupport$Handlers
+Support.ImageCompressorSupport$ImageSupport
+Support.SystemServiceSupport:
+    public static final boolean isnull(android.widget.TextView)
+    public static final boolean isnull(android.widget.EditText)
+    public static boolean isnulls(android.widget.EditText)
+    public static boolean isnulls(android.widget.TextView)
+    public java.lang.String getThisappversionName()
+    public int getThisappversionCode()
+    public java.lang.String getSystemversionName()
+    public int getSystemversionCode()
+    public boolean isCN()
+    public void CopytoSystem(java.lang.String)
+    public java.lang.String getcopyString()
+    public void hideKeyboard(android.view.View)
+    public void showKeyboard(android.view.View)
+Support.MDownloadSupport$DownloadThread
+Support.BaseActivity:
+    public static void toAppDetail(android.content.Context)
+    public android.view.View setContentView(android.view.View,int,int)
+    public void setTabImage(android.graphics.Bitmap)
+    public void setTabImage(int)
+    public void setTabTitle(int)
+    public java.lang.String getstring(int)
+    public int getVersionCode()
+    public java.lang.String getVersionName()
+    public android.graphics.Bitmap Capture()
+    public void setTabImageClickListener(android.view.View$OnClickListener)
+    public void setTabImageLongClickListener(android.view.View$OnLongClickListener)
+    public void setOrientation(int)
+    public android.view.View getView(int)
+    protected void ReStart(int)
+    public void installApk(java.io.File)
+    protected void clearAllData()
+    protected void makeToast(int)
+    protected void makeToast(int,int)
+    protected void hideKeyboard()
+    protected void showKeyboard()
+    public boolean checkPermission(java.lang.String)
+    public void requestPermissions(java.lang.String[])
+    public void setTabMenuClickListener(Support.BaseActivity$onMenuClickListener)
+Support.IOSupport$ZipSupport
+Support.SharedPreferencesSupport:
+    public void putboolean(java.lang.String,java.lang.String,boolean)
+    public void putint(java.lang.String,java.lang.String,int)
+    public void putfloat(java.lang.String,java.lang.String,float)
+    public void putlong(java.lang.String,java.lang.String,long)
+    public void putStringSet(java.lang.String,java.lang.String,java.util.Set)
+    public void remove(java.lang.String,java.lang.String)
+    public android.content.SharedPreferences$Editor getSharedPreferencesEdit(java.lang.String)
+    public java.lang.String getString(java.lang.String,java.lang.String)
+    public boolean getboolean(java.lang.String,java.lang.String)
+    public int getint(java.lang.String,java.lang.String)
+    public float getfloat(java.lang.String,java.lang.String)
+    public java.util.Set getSetString(java.lang.String,java.lang.String)
+    public java.util.Map getAll(java.lang.String)
+    public android.content.SharedPreferences getSharedPreferences(java.lang.String,int)
+    public android.content.SharedPreferences getSharedPreferences(java.lang.String)
+waste.time.yuketang.R$string
+waste.time.yuketang.R$style
+Support.DownloadsSupport
+Support.HightToastSupport
+Support.AnimSupport
+Support.ByteTransformSupport:
+    public void <init>()
+    public static byte[] File2Byte(java.io.File)
+    public static android.graphics.Bitmap Byte2Bitmap(byte[])
+    public static java.lang.String Byte2String(byte[])
+    public static java.io.File Bytes2File(java.lang.String,byte[])
+Support.BaseActivity$onMenuClickListener
+Support.IOSupport:
+    public static java.lang.String getsddir(java.lang.String)
+    public static java.lang.String getSdPath(java.lang.String)
+    public static void touchdir(java.lang.String)
+    public static void createfile(java.lang.String)
+    public static java.lang.String InputtoCharString(java.io.InputStream)
+    public static java.lang.String readString(java.io.InputStream,java.lang.String)
+    public static java.lang.String readStringbyuesthis(java.io.InputStream,java.lang.String)
+    public static void writeString(java.lang.String,java.lang.String,java.lang.String)
+    public static java.io.InputStream getInputStream(java.lang.String)
+    public static boolean delect(java.lang.String)
+    public static void delectSDFile(java.lang.String)
+    public static boolean havesdcard()
+    public static java.lang.String getSDFile(java.lang.String)
+    public static byte[] File2Byte(java.lang.String)
+    public static byte[] File2Bytes(java.lang.String)
+    public static void WrtieFile(byte[],java.lang.String)
+    public static byte[] ReadFile(android.content.Context,java.lang.String)
+    public void writer(java.lang.String,java.lang.String,int)
+    public java.lang.String read(java.lang.String)
+    public java.lang.String reader(java.lang.String)
+    public java.lang.String Read(java.lang.String)
+    public java.lang.String Read(java.io.File)
+    public java.lang.String readr(int)
+    public void writeWithDir(java.lang.String)
+    public void deletenulldir(java.lang.String)
+    public void AssetsFile_toSdcard(java.lang.String,java.lang.String)
+    public void RAWFile_toSdcard(int,java.lang.String)
+    public void rest(int,java.lang.String)
+    public void rest(java.lang.String,java.lang.String)
+    public static final java.lang.String GS_UTF_8
+    public static final java.lang.String GS_GB
+    public static final java.lang.String GS_BG5
+    public static final java.lang.String GS_HZ
+    public static final java.lang.String GS_GBK
+    public static final java.lang.String GS_Unicode
+    public static final java.lang.String GS_EUC
+    public static final java.lang.String GS_ISO
+    public static final java.lang.String GS_GB2
+    public static final java.lang.String GS_SHITF
+    public static final java.lang.String GS_UTF16
+    public static final java.lang.String GS_UTF32B
+    public static final java.lang.String GS_UTF32L
+    public static final java.lang.String GS_UTF16L
+Support.TimeSupport$2
+Support.ServiceSupport$1
+Support.DeviceSupport:
+    public boolean OpenFlashlight()
+    public boolean OffFlashlight()
+    private android.hardware.Camera camera
+    private android.hardware.Camera$Parameters mp
+Support.DownloadsSupport$onDownloadListener
+Support.SmsSupport$Oo0oOo0o
+Support.Buttons:
+    public void <init>(android.content.Context)
+    public void <init>(android.content.Context,android.util.AttributeSet)
+    public void <init>(android.content.Context,android.util.AttributeSet,int)
+    public void <init>(android.content.Context,android.util.AttributeSet,int,int)
+    private void v0(android.widget.Button,android.content.Context)
+waste.time.yuketang.R$mipmap
+Support.ImageCompressorSupport
+waste.time.yuketang.R$raw
+Support.ServiceSupport:
+    public static final android.content.Intent toSmsApp()
+    public static final android.content.Intent toPelopApp()
+    public static final android.content.Intent toHome()
+    public static final android.content.Intent toCallHistory()
+    public static final android.content.Intent toCall()
+    public static final android.content.Intent toChosePeople()
+    public static final void WriteSms(android.content.Context,java.lang.String,java.lang.String)
+    public static final android.content.Intent toOther(android.content.Context,java.lang.Class)
+    public static boolean isPhoneNumber(java.lang.CharSequence)
+    public static void startActivity(android.content.Context,java.lang.Class)
+    public static java.lang.String TenTo16(java.lang.String)
+    public static java.lang.String TenTo16(int)
+    public static java.lang.String To16To10(java.lang.String)
+    public static java.lang.String To16To10(int)
+    public static boolean String2boolean(java.lang.String)
+    public static int getShowtimes(java.lang.String,java.lang.String)
+    public static int getShowPosition(java.lang.String,java.lang.String,int)
+    public static int char_show_time(java.lang.String,java.lang.String)
+    public static final java.lang.String SmsPackageName
+    public static final java.lang.String SmsActivity
+    public static final java.lang.String PeoplePackageName
+    public static final java.lang.String PeopleActivity
+    public static final java.lang.String CallPackageName
+    public static final java.lang.String CallActivity
+    public static final java.lang.String SmsType
+Support.MD5Support:
+    public void <init>()
+    public static final java.lang.String getMD5(java.io.File)
+    public static final java.lang.String get128MD5(java.lang.String)
+    public static final java.lang.String getStringRandom()
+waste.time.yuketang.R$drawable
+Support.IOHelperSupport:
+    private javax.crypto.Cipher init(java.lang.String,int)
+    private java.lang.String passwordchange(java.lang.String)
+    public static varargs void zip(java.lang.String,java.lang.String,java.io.File[])
+    public static void zip(java.lang.String,java.lang.String,java.lang.String)
+    public static void zip(java.lang.String,java.lang.String,java.io.File)
+    private static varargs java.util.zip.ZipOutputStream zip(java.util.zip.ZipOutputStream,java.lang.String,java.io.File[])
+    private static java.util.zip.ZipFile unzip(java.io.File,java.lang.String)
+    public static void unzip(java.lang.String,java.lang.String)
+    public java.io.File encrypt(java.lang.String,java.lang.String,java.lang.String)
+    public byte[] encrypt(java.lang.String,java.lang.String)
+    public java.io.File decrypt(java.lang.String,java.lang.String,java.lang.String)
+    public byte[] decrypt(java.lang.String,java.lang.String)
+    public void zip(java.lang.String,java.lang.String,java.io.File,java.lang.String)
+    public void zip(java.lang.String,java.lang.String,java.io.File[],java.lang.String)
+    public void zip(java.lang.String,java.lang.String,java.lang.String,java.lang.String)
+    public void unzip(java.lang.String,java.lang.String,java.lang.String)
+waste.time.yuketang.R$layout
+Support.LongToastFactorySupport:
+    private double gettoasty()
+    public Support.LongToastFactorySupport makeText(java.lang.String)
+    public Support.LongToastFactorySupport makeText(int)
+    public Support.LongToastFactorySupport makeText(java.lang.String,android.graphics.drawable.Drawable)
+    public Support.LongToastFactorySupport makeText(java.lang.String,int)
+    public Support.LongToastFactorySupport makeText(int,int)
+    public Support.LongToastFactorySupport makeText_OnlyDrawable(int)
+    public Support.LongToastFactorySupport makeText_OnlyDrawable(android.graphics.drawable.Drawable)
+Support.SmsSupport$b
+Support.SmsSupport$Oo0oOoo
+waste.time.yuketang.R$color
+Support.DownloadsSupport$classes
+Support.PluginSupport.PluginActivity
+Support.ShortToastFactorySupport:
+    public Support.ShortToastFactorySupport makeText(java.lang.String)
+    public Support.ShortToastFactorySupport makeText(int)
+    public Support.ShortToastFactorySupport makeText(java.lang.String,android.graphics.drawable.Drawable)
+    public Support.ShortToastFactorySupport makeText(java.lang.String,int)
+    public Support.ShortToastFactorySupport makeText(int,int)
+    public Support.ShortToastFactorySupport makeText_OnlyDrawable(int)
+    public Support.ShortToastFactorySupport makeText_OnlyDrawable(android.graphics.drawable.Drawable)
+    public double gettoasty()
+Support.DialogSupport:
+    public android.app.AlertDialog SimpleViewDialog(android.view.View,boolean)
+    public void upDataDialog()
+Support.ToastSupport
+Support.SystemSupport:
+    public java.lang.String getIMEI()
+    public int callmode()
+    public java.lang.String getImei()
+    public java.lang.String getsv()
+    public java.lang.String getphoneNumber()
+    public java.lang.String getISO()
+    public java.lang.String getUserName()
+    public boolean isFlyMode()
+    public int getphonetype()
+    public int getsim()
+    public boolean CheckNetWork()
+    public int getNetWorkType()
+    public static final int ERROR
+    public static final java.lang.String ERRORS
+Support.MDownloadSupport$DownloadInformation
+waste.time.yuketang.BuildConfig
+Support.IOSupport$onError
+Support.ClassSupport:
+    public void setErrorListener(Support.onError)
+Support.TextViews:
+    public void <init>(android.content.Context)
+    public void <init>(android.content.Context,android.util.AttributeSet)
+    public void <init>(android.content.Context,android.util.AttributeSet,int)
+    public void <init>(android.content.Context,android.util.AttributeSet,int,int)
+    private void v1(android.widget.TextView,android.content.Context)
+Support.EditTexts:
+    public void <init>(android.content.Context)
+    public void <init>(android.content.Context,android.util.AttributeSet)
+    public void <init>(android.content.Context,android.util.AttributeSet,int)
+    public void <init>(android.content.Context,android.util.AttributeSet,int,int)
+    private void v2(android.widget.EditText,android.content.Context)
+Support.MDownloadSupport$DownloadListener
+Support.HttpSupport
+Support.LogSupport:
+    private java.util.logging.Logger getLogger(java.lang.Class)
+    public void writelog(java.lang.String,java.lang.String)
+    public java.lang.String readlog(java.lang.String)
+    public void outputlog(java.lang.String,java.lang.String)
+    public void clearLog()
+Support.TimeSupport
+Support.FileObserveSupport
+Support.DownloadSupport
+Support.WifiSuport
+Support.SmsSupport$OooO0O0
+Support.ImageCompressorSupport$FileSupport
+Support.TimeSupport$1
+Support.SmsSupport
+Support.SmsSupport$1
+Support.MDownloadSupport
+Support.NotificationSupport
+waste.time.yuketang.R
+Support.SmsSupport$OnSendListener
+Support.DialogFactorySupport:
+    public android.app.AlertDialog SimpleDialog(java.lang.String,java.lang.String,java.lang.String,java.lang.String,android.view.View$OnClickListener,android.view.View$OnClickListener,boolean,boolean[])
+    public android.app.AlertDialog SimpleDialog(int,int,java.lang.String,java.lang.String,android.view.View$OnClickListener,android.view.View$OnClickListener,boolean)
+    public android.app.AlertDialog SimpleDialog_NoText(java.lang.String,java.lang.String,java.lang.String,android.view.View$OnClickListener,android.view.View$OnClickListener,boolean)
+    public android.app.AlertDialog SimpleDialog_NoText(int,int,int,android.view.View$OnClickListener,android.view.View$OnClickListener,boolean)
+    public android.app.AlertDialog SimpleDialog__NoTitle(java.lang.String,java.lang.String,java.lang.String,android.view.View$OnClickListener,android.view.View$OnClickListener,boolean)
+    public android.app.AlertDialog SimpleDialog__NoTitle(int,int,int,android.view.View$OnClickListener,android.view.View$OnClickListener,boolean)
+    public android.app.AlertDialog SimpleDialog_Only_OneButton(java.lang.String,java.lang.String,java.lang.String,android.view.View$OnClickListener,boolean)
+    public android.app.AlertDialog SimpleDialog_NoTitle_Only_OneButton(int,int,android.view.View$OnClickListener,boolean)
+    public android.app.AlertDialog SimpleDialog_Only_OneButton(int,int,int,android.view.View$OnClickListener,boolean)
+    public android.app.AlertDialog SimpleDialog_Notitle_NoText(java.lang.String,java.lang.String,android.view.View$OnClickListener,android.view.View$OnClickListener,boolean)
+    public android.app.AlertDialog SimpleDialog_Notitle_NoText(int,int,android.view.View$OnClickListener,android.view.View$OnClickListener,boolean)
+    public android.app.AlertDialog SimpleDialog_NoText_NoTitle_OneButton(java.lang.String,android.view.View$OnClickListener,boolean)
+    public android.app.AlertDialog SimpleDialog_NoText_NoTitle_OneButton(int,android.view.View$OnClickListener,boolean)
+    public android.app.AlertDialog SimpleDialog_NoButton(java.lang.String,java.lang.String,boolean)
+    public android.app.AlertDialog SimpleDialog_NoButton(int,int,boolean)
+    public android.app.AlertDialog SimpleDialog_OnlyText(java.lang.String,boolean)
+    public android.app.AlertDialog SimpleDialog_OnlyText(int,boolean)
+    public android.app.AlertDialog SimpleDialog_OnlyTitle(java.lang.String,boolean)
+    public android.app.AlertDialog SimpleDialog_OnlyTitle(int,boolean)
+    public android.app.AlertDialog SimpleDialog_NoTitle_OnlyOneButton(java.lang.String,java.lang.String,android.view.View$OnClickListener,boolean)
+    public android.app.AlertDialog SimpleDialog_NoTitle_OnlyOneButton(int,int,android.view.View$OnClickListener,boolean)
+    public android.app.AlertDialog SimpleDialog_NoAll(boolean)
+    public android.app.AlertDialog SimpleDialog_List(java.lang.String[],java.lang.String,android.widget.AdapterView$OnItemClickListener,boolean)
+    public android.app.AlertDialog SimpleDialog_List(java.lang.String[],int,android.widget.AdapterView$OnItemClickListener,boolean)
+    public android.app.AlertDialog SimpleDialog_List_NoTitle(java.lang.String[],android.widget.AdapterView$OnItemClickListener,boolean)
+    public android.app.AlertDialog SimpleDialog_ListWhitDrawable(java.lang.String[],java.lang.String,int[],android.widget.AdapterView$OnItemClickListener,boolean)
+    public android.app.AlertDialog SimpleDialog_ListWhitDrawable(int[],int,int[],android.widget.AdapterView$OnItemClickListener,boolean)
+    public android.app.AlertDialog SimpleDialog_ListWhitDrawable_NoTitle(java.lang.String[],int[],android.widget.AdapterView$OnItemClickListener,boolean)
+    public android.app.AlertDialog SimpleDialog_ListWhitDrawable_NoTitle(int[],int[],android.widget.AdapterView$OnItemClickListener,boolean)
+    public android.app.AlertDialog SimpleProgressDialog(java.lang.String,boolean)
+    public android.app.AlertDialog SimpleProgressDialog(int,boolean)
+    public android.app.AlertDialog SimpleProgressDialog_NoMessage(boolean)
+    public void setservicemode()
+Support.BaseActivity$1
+Support.BaseApplication$ContextUntils:
+    public final synthetic Support.BaseApplication this$0
+Support.SystemServiceSupport:
+    public static final int getSystemSDK()
+    public static double getSystemVersion()
+    public java.lang.String getPackageName()
+    public void checkNetWork()
+    public void toKill()
+    public double getWindowHight()
+    public java.lang.String androids
+    public java.lang.String mandroid
+Support.BaseActivity:
+    public final android.graphics.drawable.Drawable getPackageIcon()
+    public final void NetSecurity()
+    public final void initfile()
+    public void initActivity(android.content.Context)
+    public android.view.View setContentView(int,int,int)
+    public void setTabImage(android.graphics.drawable.Drawable)
+    public void setTabTitle(java.lang.String)
+    public java.lang.String getAppName()
+    public android.widget.LinearLayout LinearLayouts
+    public android.widget.GridView GridView
+    public Support.DialogFactorySupport DialogFactorySupport
+    public Support.DeviceSupport DeviceSupport
+    public Support.ShortToastFactorySupport ShortToastFactorySupport
+    public Support.LongToastFactorySupport LongToastFactorySupport
+    public Support.IOHelperSupport IOHelperSupport
+    public Support.SystemSupport SystemSupport
+    public Support.ServiceSupport ServiceSupport
+    public int WRAP_CONTENT
+    public Support.LogSupport LogSupport
+Support.SharedPreferencesSupport:
+    public void putString(java.lang.String,java.lang.String,java.lang.String)
+    public boolean isnull(java.lang.String)
+Support.onError
+Support.DialogFactorySupport$dismiss:
+    public final synthetic Support.DialogFactorySupport this$0
+Support.ByteTransformSupport:
+    public static java.lang.String Base64Encode(byte[])
+    public static final java.lang.String getStringRandoms()
+    public static byte[] toString(android.content.Context,java.lang.String)
+Support.IOSupport:
+    public static byte[] RawFile2byte(android.content.Context,int)
+    public static void WriteFile(android.content.Context,byte[],java.lang.String)
+    public static void delectDirs(java.lang.String)
+    public void clearCache()
+    public void write(java.lang.String,java.lang.String)
+Support.DeviceSupport
+Support.ServiceSupport
+Support.MD5Support
+Support.IOHelperSupport
+Support.LongToastFactorySupport:
+    public android.content.Context con
+Support.ShortToastFactorySupport:
+    public android.content.Context con
+Support.DialogSupport:
+    public static synthetic android.content.Context access$000(Support.DialogSupport)
+    public void SimpleExitDialog()
+Support.SystemSupport
+Support.ClassSupport:
+    public static java.lang.String getString(android.content.Context,java.lang.String)
+    public Support.onError error
+Support.LogSupport
+Support.DialogFactorySupport:
+    public final void a(android.app.AlertDialog$Builder)
+    public android.app.AlertDialog SimpleDialog(java.lang.String,java.lang.String,java.lang.String,java.lang.String,android.view.View$OnClickListener,android.view.View$OnClickListener,boolean)
+    public boolean isservice

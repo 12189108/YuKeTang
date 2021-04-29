@@ -1,0 +1,8 @@
+Support.TextViews
+Support.BaseApplication
+Support.BaseApplication: BaseApplication()
+Support.Buttons
+waste.time.yuketang.LoginActivity: LoginActivity()
+Support.BaseActivity: BaseActivity()
+waste.time.yuketang.LoginActivity
+Support.EditTexts
