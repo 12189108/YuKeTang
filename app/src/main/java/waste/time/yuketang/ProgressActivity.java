@@ -7,15 +7,15 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.view.KeyEvent;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import Support.BaseActivity;
 import Support.HttpSupport;
+import org.json.*;
 
 public class ProgressActivity extends BaseActivity {
-    private JSONObject data;
+    private JSONObject data,course_data;
+	private JSONArray course_datas;
     private String video_url,cookie,uv_id;
     private AlertDialog load_dialog;
     private String[] msg;
@@ -45,6 +45,7 @@ public class ProgressActivity extends BaseActivity {
     private String[] getVideoIds(){
         HttpSupport http=new HttpSupport();
         http.init(video_url);
+		
         http.AttachCookie(cookie).AttachUser_Agent(getstring(R.string.user_agent)).AttachProperty("university-id",uv_id).AttachProperty("xtbz","cloud");
         return http.getHtml();
     }
@@ -71,7 +72,17 @@ public class ProgressActivity extends BaseActivity {
         public void run() {
             super.run();
             msg=getVideoIds();
-            if(msg[0].equals("200"))new Handlers().sendEmptyMessage(0);
+            if(msg[0].equals("200")){
+				try
+				{
+					course_data = new JSONObject(msg[1]);
+					course_data=course_data.getJSONObject("data");
+					course_datas=course_data.getJSONArray("course_chapter");
+				}
+				catch (JSONException e)
+				{}
+				new Handlers().sendEmptyMessage(0);
+			}
             else new Handlers().sendEmptyMessage(1);
         }
     }
