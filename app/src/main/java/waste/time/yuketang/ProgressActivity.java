@@ -1,16 +1,11 @@
 package waste.time.yuketang;
 
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.view.KeyEvent;
-import org.json.JSONException;
-import org.json.JSONObject;
-import Support.BaseActivity;
-import Support.HttpSupport;
+import Support.*;
+import android.annotation.*;
+import android.app.*;
+import android.os.*;
+import android.view.*;
+import java.util.*;
 import org.json.*;
 
 public class ProgressActivity extends BaseActivity {
@@ -32,7 +27,7 @@ public class ProgressActivity extends BaseActivity {
         }
         catch (JSONException e) {}
         new Process().start();
-    }
+	}
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
