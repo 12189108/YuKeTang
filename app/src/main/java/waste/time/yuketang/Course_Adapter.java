@@ -9,7 +9,7 @@ public class Course_Adapter extends ArrayAdapter<Course_data>
 {
 	public Course_Adapter(Context context, int resourceId, List<Course_data> Course_data){
         super(context, resourceId, Course_data);
-        
+
     }
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent)
@@ -20,7 +20,7 @@ public class Course_Adapter extends ArrayAdapter<Course_data>
 			View_Holder=(Course_Adapter.View_Holder) convertView.getTag();
 		}else{
 			View_Holder=new View_Holder();
-			convertView=LayoutInflater.from(getContext()).inflate(R.layout.course_list_adapterView,parent,false);
+			convertView=LayoutInflater.from(getContext()).inflate(R.layout.course_list_adapterview,parent);
 			View_Holder.state_Image=convertView.findViewById(R.id.compelete_state);
 			View_Holder.course_name=convertView.findViewById(R.id.course_name);
 			View_Holder.complete_state=convertView.findViewById(R.id.compelete_state_text);

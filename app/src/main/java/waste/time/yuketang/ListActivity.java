@@ -138,6 +138,8 @@ public class ListActivity extends BaseActivity {
                 i.putExtra("msg",list_json.getJSONObject(position).toString());
                 i.putExtra("uv_id",university_id);
                 i.putExtra("cookie",cookie);
+                i.putExtra("user_id",user_id);
+                i.putExtra("token",csrftoken);
             } catch (JSONException e) {
             }
             startActivity(i);
