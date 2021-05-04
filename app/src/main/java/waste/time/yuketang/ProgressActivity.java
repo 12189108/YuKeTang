@@ -6,11 +6,9 @@ import android.app.*;
 import android.os.*;
 import android.view.*;
 import android.widget.ListView;
-
+import android.widget.TextView;
 import java.text.DecimalFormat;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.json.*;
 
@@ -23,13 +21,17 @@ public class ProgressActivity extends BaseActivity {
     private int sku_id;
     private Course_Adapter adapter;
     private ListView lv;
+    private android.widget.TextView course_num;
+    private int course_num_num;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initActivity(this);
         setOrientation(1);
-        setContentView(R.layout.list_all);
-        lv=findViewById(R.id.all_list);
+        setContentView(R.layout.course_list);
+        lv=findViewById(R.id.course_list);
+        course_num=findViewById(R.id.couse_num_2);
         cookie=getIntent().getStringExtra("cookie");
         uv_id=getIntent().getStringExtra("uv_id");
         user_id=getIntent().getStringExtra("user_id");
@@ -106,6 +108,7 @@ public class ProgressActivity extends BaseActivity {
         return false;
     }
     private void listitem() throws JSONException {
+        course_num_num = 0;
         set_video=new JSONArray();
         List<Course_data> list=new ArrayList<Course_data>();
         for(int i=0;i<course_datas.length();i++){
@@ -117,6 +120,7 @@ public class ProgressActivity extends BaseActivity {
                    for(int m=0;m<tmp3.length();m++){
                        JSONObject tmp4 = tmp3.getJSONObject(m);
                        if (tmp4.getInt("leaf_type") == 0) {
+                           course_num_num+=1;
                            boolean complete = compete_state(tmp4.getString("id"));
                            list.add(new Course_data(tmp4.getString("name"), getProgress(video_detail), complete, tmp4.getInt("leaf_type"), complete ? getResources().getDrawable(R.drawable.bd9) : getResources().getDrawable(R.drawable.bcp),!complete));
                            if(!complete) {
@@ -129,6 +133,7 @@ public class ProgressActivity extends BaseActivity {
                    }
                }
                else{
+                   course_num_num+=1;
                    JSONObject tmp3=tmp2;
                    boolean complete=getDiscussion_state(tmp3.getString("id"));
                    list.add(new Course_data(course_datas.getJSONObject(i).getString("name")+tmp3.getString("name"),complete?"已完成":"未开始",complete,tmp3.getInt("leaf_type"),complete?getResources().getDrawable(R.drawable.bd9) : getResources().getDrawable(R.drawable.bcp),!complete));
@@ -199,6 +204,7 @@ public class ProgressActivity extends BaseActivity {
             switch (msg.what){
                 case 0:
                     lv.setAdapter(adapter);
+                    course_num.setText("共"+course_num_num+"个可刷作业");
                     load_dialog.dismiss();
                     break;
                 case 1:

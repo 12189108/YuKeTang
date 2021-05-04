@@ -7,10 +7,13 @@
 
 	<LinearLayout
 		android:orientation="horizontal"
+        android:layout_gravity="center"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content">
 
 		<TextView
+            android:text="加载中..."
+            android:textColor="@color/black"
 			android:id="@+id/couse_num_2"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
@@ -22,10 +25,12 @@
 			android:layout_weight="1.0"/>
 
 		<Support.Buttons
+            android:textColor="@color/white"
 			android:background="@drawable/bn_copy"
 			android:text="@string/start"
 			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"/>
+            android:layout_margin="3dp"
+			android:layout_height="34dp"/>
 
 	</LinearLayout>
 
