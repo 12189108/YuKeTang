@@ -16,21 +16,24 @@ import org.json.*;
 
 public class ProgressActivity extends BaseActivity {
     private JSONObject data,course_data;
-	private JSONArray course_datas;
+	private JSONArray course_datas,set_video;
     private String video_url,cookie,uv_id,course_id,user_id,video_detail,classroom_id,x_csrftoken;
     private AlertDialog load_dialog;
     private String[] msg;
+    private int sku_id;
     private Course_Adapter adapter;
     private ListView lv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initActivity(this);
+        setOrientation(1);
         setContentView(R.layout.list_all);
         lv=findViewById(R.id.all_list);
         cookie=getIntent().getStringExtra("cookie");
         uv_id=getIntent().getStringExtra("uv_id");
         user_id=getIntent().getStringExtra("user_id");
+        sku_id=getIntent().getIntExtra("sku_id",0);
         x_csrftoken=getIntent().getStringExtra("token");
         load_dialog=DialogFactorySupport.SimpleProgressDialog(getstring(R.string.course_load),false);
         try { 
@@ -103,6 +106,7 @@ public class ProgressActivity extends BaseActivity {
         return false;
     }
     private void listitem() throws JSONException {
+        set_video=new JSONArray();
         List<Course_data> list=new ArrayList<Course_data>();
         for(int i=0;i<course_datas.length();i++){
            JSONArray tmp=course_datas.getJSONObject(i).getJSONArray("section_leaf_list");
@@ -115,6 +119,12 @@ public class ProgressActivity extends BaseActivity {
                        if (tmp4.getInt("leaf_type") == 0) {
                            boolean complete = compete_state(tmp4.getString("id"));
                            list.add(new Course_data(tmp4.getString("name"), getProgress(video_detail), complete, tmp4.getInt("leaf_type"), complete ? getResources().getDrawable(R.drawable.bd9) : getResources().getDrawable(R.drawable.bcp),!complete));
+                           if(!complete) {
+                               JSONObject tmp_js = new JSONObject();
+                               tmp_js.put("video_id", tmp4.getInt("id"));
+                               tmp_js.put("list_position", list.size() - 1);
+                               set_video.put(tmp_js);
+                           }
                        }
                    }
                }
@@ -126,6 +136,57 @@ public class ProgressActivity extends BaseActivity {
            }
         }
         adapter=new Course_Adapter(getApplicationContext(),0,list);
+    }
+    private String getCcid(String video_id) throws JSONException {
+        HttpSupport http = new HttpSupport();
+        http.init(getstring(R.string.get_ccid_url).replace("*",classroom_id).replace("#",video_id).replace("!",data.getString("course_sign"))+uv_id);
+        http.AttachCookie(cookie).AttachUser_Agent(getstring(R.string.user_agent)).AttachProperty("x-csrftoken",x_csrftoken).AttachProperty("xtbz","cloud").AttachProperty("university-id",uv_id);
+        String[] ccids = http.getHtml();
+        if(ccids[0].equals("200")){
+            if(ccids[1].contains("ccid")){
+                return new JSONObject(ccids[1]).getJSONObject("data").getJSONObject("media").getString("ccid");
+            }
+            else return video_id;
+        }
+        else return getCcid(video_id);
+    }
+    private void kill_video(int video_id) throws JSONException {
+        JSONObject d=new JSONObject();
+        JSONArray progress_array = new JSONArray();
+        int video_frame = 0;
+        int learning_rate = 20;
+        for(int i=0;i<=49;i++){
+            JSONObject tmpjs = new JSONObject();
+            tmpjs.put("i",5);
+            tmpjs.put("et","loadeddata");
+            tmpjs.put("p","web");
+            tmpjs.put("n","ws");
+            tmpjs.put("lob","cloud4");
+            tmpjs.put("cp",video_frame);
+            tmpjs.put("sp",1);
+            tmpjs.put("tp",0);
+            tmpjs.put("fp",0);
+            tmpjs.put("ts",System.currentTimeMillis()+"");
+            tmpjs.put("u",Integer.valueOf(user_id));
+            tmpjs.put("uip","");
+            tmpjs.put("c",Integer.valueOf(course_id));
+            tmpjs.put("v",video_id);
+            tmpjs.put("skuid",sku_id);
+            tmpjs.put("classrommid",Integer.valueOf(classroom_id));
+            String ccid=getCcid(video_id+"");
+            tmpjs.put("cc",ccid);
+            tmpjs.put("d",10000);
+            tmpjs.put("pg",video_id+"_wlnd");
+            tmpjs.put("sq",i+1);
+            tmpjs.put("t","video");
+            progress_array.put(tmpjs);
+            video_frame+=learning_rate;
+        }
+        d.put("heart_data",progress_array);
+        HttpSupport http = new HttpSupport();
+        http.init("https://bksycsu.yuketang.cn/video-log/heartbeat/");
+        http.AttachCookie(cookie).AttachUser_Agent(getstring(R.string.user_agent)).AttachProperty("xtbz","cloud").AttachProperty("x-csrftoken",x_csrftoken);
+        http.POSTData(d.toString());
     }
     @SuppressLint("HandlerLeak")
     private class Handlers extends Handler{

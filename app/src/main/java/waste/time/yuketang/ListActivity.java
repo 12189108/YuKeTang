@@ -141,6 +141,7 @@ public class ListActivity extends BaseActivity {
             try {
                 i.putExtra("msg",list_json.getJSONObject(position).toString());
                 i.putExtra("uv_id",university_id);
+                i.putExtra("sku_id",list_json.getJSONObject(position).getInt("sku_id"));
                 i.putExtra("cookie",cookie);
                 i.putExtra("user_id",user_id);
                 i.putExtra("token",csrftoken);
