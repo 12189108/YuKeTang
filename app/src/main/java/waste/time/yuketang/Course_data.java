@@ -4,15 +4,16 @@ import android.graphics.drawable.*;
 public class Course_data
 {
 	private String Course_name,Progress;
-	private boolean complete;
+	private boolean complete,needexec;
 	private Drawable state;
 	private int type;
-	public Course_data(String Course_name,String Progress,boolean complete,int type,Drawable sate){
+	public Course_data(String Course_name,String Progress,boolean complete,int type,Drawable sate,boolean needexec){
 		this.Course_name=Course_name;
 		this.Progress=Progress;
 		this.complete=complete;
 		this.type=type;
 		this.state=sate;
+		this.needexec=needexec;
 	}
 	public String getCourse_name(){
 		return Course_name+"("+CheckType(type)+")";
@@ -26,6 +27,7 @@ public class Course_data
 	public String getProgress(){
 		return Progress;
 	}
+	public boolean isNeedexec(){return needexec;}
 	private String CheckType(int mtype){
 		switch(mtype)
 		{
@@ -34,7 +36,7 @@ public class Course_data
 			case 3:
 				return "推荐";
 			case 4:
-				return "讨论";
+				return "讨论题";
 			case 5:
 				return "考试";
 			case 6:

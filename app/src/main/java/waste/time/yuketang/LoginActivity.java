@@ -27,6 +27,7 @@ public class LoginActivity extends BaseActivity {
         setContentView(R.layout.login);
         setTabTitle(getstring(R.string.login_title));
         cookies=findViewById(R.id.cookie);
+        //ShortToastFactorySupport.makeText(System.currentTimeMillis()+"").show();
     }
   public void save(View v){
       String cookie = cookies.getText().toString();

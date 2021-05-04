@@ -9,6 +9,7 @@ import android.os.Message;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -31,7 +32,7 @@ public class ListActivity extends BaseActivity {
     private ListView course_list;
     private JSONObject data;
     private JSONArray list_json;
-
+    private LinearLayout layout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +40,8 @@ public class ListActivity extends BaseActivity {
         setContentView(R.layout.list_all);
         course_num=findViewById(R.id.couse_num);
         course_list=findViewById(R.id.all_list);
+        layout=findViewById(R.id.all_list_layout);
+        layout.setVisibility(View.INVISIBLE);
         cookie=getIntent().getStringExtra("cookie");
         university_id=Match(R.string.univeristy_id,cookie);
         csrftoken=Match(R.string.csrftoken,cookie);
@@ -110,6 +113,7 @@ public class ListActivity extends BaseActivity {
                         data = new JSONObject(msgs2[1]).getJSONObject("data");
                         course_num.setText(getstring(R.string.class_number).replace("%",data.getString("count")));
                         update_course();
+                        layout.setVisibility(View.VISIBLE);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
