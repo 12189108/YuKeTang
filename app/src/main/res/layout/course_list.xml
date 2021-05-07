@@ -26,6 +26,7 @@
 
 		<Support.Buttons
             android:textColor="@color/white"
+			android:onClick="kill_lesson"
 			android:background="@drawable/bn_copy"
 			android:text="@string/start"
 			android:layout_width="wrap_content"

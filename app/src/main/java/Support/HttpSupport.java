@@ -56,6 +56,7 @@ public class HttpSupport
 		if(URLUtil.isNetworkUrl(Url)){
 			try
 			{
+				conn.connect();
 				int responseCode=conn.getResponseCode();
 				BufferedReader reader=new BufferedReader(new InputStreamReader(conn.getInputStream()));
 				StringBuilder content=new StringBuilder();
@@ -84,8 +85,7 @@ public class HttpSupport
 				conn.setDoOutput(true);
 				conn.setDoInput(true);
 				conn.setRequestMethod("POST");
-				conn.setUseCaches(false);
-				conn.setInstanceFollowRedirects(true);
+				conn.connect();
 				DataOutputStream dataout=new DataOutputStream(conn.getOutputStream());
 				dataout.writeBytes(postdata);
 				dataout.flush();
