@@ -178,7 +178,6 @@ Support.MD5Support:
     public static final java.lang.String getMD5(java.io.File)
     public static final java.lang.String get128MD5(java.lang.String)
     public static final java.lang.String getStringRandom()
-waste.time.yuketang.R$drawable
 Support.IOHelperSupport:
     private javax.crypto.Cipher init(java.lang.String,int)
     private java.lang.String passwordchange(java.lang.String)
@@ -196,6 +195,7 @@ Support.IOHelperSupport:
     public void zip(java.lang.String,java.lang.String,java.io.File[],java.lang.String)
     public void zip(java.lang.String,java.lang.String,java.lang.String,java.lang.String)
     public void unzip(java.lang.String,java.lang.String,java.lang.String)
+waste.time.yuketang.R$drawable
 waste.time.yuketang.R$layout
 Support.LongToastFactorySupport:
     public Support.LongToastFactorySupport makeText(java.lang.String)
@@ -381,15 +381,21 @@ waste.time.yuketang.ProgressActivity:
     public static synthetic int access$400(waste.time.yuketang.ProgressActivity)
     public static synthetic android.widget.TextView access$500(waste.time.yuketang.ProgressActivity)
     public static synthetic android.app.AlertDialog access$600(waste.time.yuketang.ProgressActivity)
-    public static synthetic java.lang.String[] access$702(waste.time.yuketang.ProgressActivity,java.lang.String[])
-    public static java.lang.String[] access$800(waste.time.yuketang.ProgressActivity)
-    public static synthetic java.lang.String[] access$700(waste.time.yuketang.ProgressActivity)
-    public static synthetic org.json.JSONObject access$902(waste.time.yuketang.ProgressActivity,org.json.JSONObject)
-    public static synthetic org.json.JSONObject access$900(waste.time.yuketang.ProgressActivity)
-    public static synthetic org.json.JSONArray access$1002(waste.time.yuketang.ProgressActivity,org.json.JSONArray)
-    public static synthetic org.json.JSONArray access$1200(waste.time.yuketang.ProgressActivity)
+    public static synthetic int access$702(waste.time.yuketang.ProgressActivity,int)
+    public static synthetic int access$802(waste.time.yuketang.ProgressActivity,int)
+    public static synthetic int access$800(waste.time.yuketang.ProgressActivity)
+    public static synthetic org.json.JSONArray access$900(waste.time.yuketang.ProgressActivity)
+    public static synthetic android.app.AlertDialog access$602(waste.time.yuketang.ProgressActivity,android.app.AlertDialog)
+    public static synthetic int access$700(waste.time.yuketang.ProgressActivity)
+    public static synthetic java.lang.String[] access$1002(waste.time.yuketang.ProgressActivity,java.lang.String[])
+    public static java.lang.String[] access$1100(waste.time.yuketang.ProgressActivity)
+    public static synthetic java.lang.String[] access$1000(waste.time.yuketang.ProgressActivity)
+    public static synthetic org.json.JSONObject access$1202(waste.time.yuketang.ProgressActivity,org.json.JSONObject)
+    public static synthetic org.json.JSONObject access$1200(waste.time.yuketang.ProgressActivity)
+    public static synthetic org.json.JSONArray access$1302(waste.time.yuketang.ProgressActivity,org.json.JSONArray)
     public final java.lang.String[] getVideoIds()
     public final boolean check(java.lang.String)
+    public final int getInquireNum()
     public final java.lang.String getProgress(java.lang.String)
     public final void listitem()
     public final void kill_video(int)
@@ -437,4 +443,5 @@ Support.LogSupport
 Support.DialogFactorySupport:
     public final void a(android.app.AlertDialog$Builder)
     public android.app.AlertDialog SimpleDialog(java.lang.String,java.lang.String,java.lang.String,java.lang.String,android.view.View$OnClickListener,android.view.View$OnClickListener,boolean)
+    public void changeText(java.lang.String)
     public boolean isservice

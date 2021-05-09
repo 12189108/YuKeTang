@@ -24,6 +24,8 @@ public class DialogFactorySupport extends ClassSupport
 	//可在catch后加finish();以减小用户体验不适。否则无法关闭软件！
 	private Context con;
 	private boolean isservice=false;
+	private TextView tv;
+
 	private void a(AlertDialog.Builder a){
 		a.create().getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
 	}
@@ -372,8 +374,7 @@ public class DialogFactorySupport extends ClassSupport
 			return aa;
 		}
 		catch (Throwable e)
-		{if(error!=null)error.onError(e,"SimpleDialog_Notitle_NoText",DialogFactorySupport.class);
-			Log.e("SimpleDialog_Notitle_NoText",DialogFactorySupport.class.toString(),e);
+		{
 }
 		return null;
 	}
@@ -413,8 +414,8 @@ public class DialogFactorySupport extends ClassSupport
 			return aa;
 		}
 		catch(Throwable e)
-		{if(error!=null)error.onError(e,"SimpleDialog_Notitle_NoText",DialogFactorySupport.class);
-			Log.e("SimpleDialog_Notitle_NoText",DialogFactorySupport.class.toString(),e);
+		{
+
 }
 		return null;
 	}
@@ -948,7 +949,7 @@ public class DialogFactorySupport extends ClassSupport
 		try{
 		View v=LayoutInflater.from(con).inflate(R.layout.dialog_progress,null);
 		ImageView im=(ImageView) v.findViewById(R.id.dialogprogressImageView1);
-		TextView tv=(TextView) v.findViewById(R.id.dialogprogressTextView1);
+		tv=(TextView) v.findViewById(R.id.dialogprogressTextView1);
 		im.startAnimation(AnimSupport.rotate(360,1000,true,true));
 		tv.setText(Message);
 		AlertDialog.Builder a=new AlertDialog.Builder(con);
@@ -994,7 +995,10 @@ public class DialogFactorySupport extends ClassSupport
 			error.onError(e,"SimpleProgressDialog_NoMessage",DialogFactorySupport.class);return null;
 		}
 	}
-	
+	//为适应功能需要，临时修改
+	public void changeText(String newText){
+		tv.setText(newText);
+	}
 	private class dismiss implements View.OnClickListener
 	{
 		private AlertDialog aa;

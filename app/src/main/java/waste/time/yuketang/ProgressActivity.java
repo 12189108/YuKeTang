@@ -21,8 +21,9 @@ public class ProgressActivity extends BaseActivity {
     private Course_Adapter adapter;
     private ListView lv;
     private android.widget.TextView course_num;
-    private int course_num_num;
-
+    private int course_num_num=0;
+    private int complete_quire=0;
+    private int compelete_kill_course=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +88,29 @@ public class ProgressActivity extends BaseActivity {
         return false;
         //SystemServiceSupport.CopytoSystem(m.group().toString());
     }
+    private int getInquireNum() throws JSONException {
+        for(int i=0;i<course_datas.length();i++){
+            JSONArray tmp=course_datas.getJSONObject(i).getJSONArray("section_leaf_list");
+            for(int n=1;n<tmp.length();n++){
+                JSONObject tmp2=tmp.getJSONObject(n);
+                if(tmp2.has("leaf_list")){
+                    JSONArray tmp3=tmp2.getJSONArray("leaf_list");
+                    for(int m=0;m<tmp3.length();m++){
+                        JSONObject tmp4 = tmp3.getJSONObject(m);
+                        if (tmp4.getInt("leaf_type") == 0) {
+                            course_num_num+=1;
+                        }
+                    }
+                }
+                else{
+                    course_num_num+=1;
+                    JSONObject tmp3=tmp2;
+
+                }
+            }
+        }
+        return course_num_num;
+    }
     private String getProgress(String data){
         if(data.contains("rate")){
             String tmp=data.substring(data.indexOf("rate"));
@@ -112,7 +136,6 @@ public class ProgressActivity extends BaseActivity {
         return false;
     }
     private void listitem() throws JSONException {
-        course_num_num = 0;
         set_video=new JSONArray();
         List<Course_data> list=new ArrayList<>();
         for(int i=0;i<course_datas.length();i++){
@@ -124,9 +147,10 @@ public class ProgressActivity extends BaseActivity {
                    for(int m=0;m<tmp3.length();m++){
                        JSONObject tmp4 = tmp3.getJSONObject(m);
                        if (tmp4.getInt("leaf_type") == 0) {
-                           course_num_num+=1;
                            boolean complete = compete_state(tmp4.getString("id"));
                            list.add(new Course_data(tmp4.getString("name"), getProgress(video_detail), complete, tmp4.getInt("leaf_type"), complete ? getResources().getDrawable(R.drawable.bd9) : getResources().getDrawable(R.drawable.bcp),!complete));
+                           complete_quire+=1;
+                           new Handlers().sendEmptyMessage(200);
                            if(!complete) {
                                JSONObject tmp_js = new JSONObject();
                                tmp_js.put("video_id", tmp4.getInt("id"));
@@ -137,14 +161,14 @@ public class ProgressActivity extends BaseActivity {
                    }
                }
                else{
-                   course_num_num+=1;
                    JSONObject tmp3=tmp2;
                    boolean complete=getDiscussion_state(tmp3.getString("id"));
                    list.add(new Course_data(course_datas.getJSONObject(i).getString("name")+tmp3.getString("name"),complete?"已完成":"未开始",complete,tmp3.getInt("leaf_type"),complete?getResources().getDrawable(R.drawable.bd9) : getResources().getDrawable(R.drawable.bcp),!complete));
+                   complete_quire+=1;
+                   new Handlers().sendEmptyMessage(200);
                    if(!complete&&tmp3.getInt("leaf_type")==0){
                        JSONObject tmp_js = new JSONObject();
                        tmp_js.put("video_id", tmp3.getInt("id"));
-                       tmp_js.put("list_position", list.size() - 1);
                        set_video.put(tmp_js);
                    }
                }
@@ -168,7 +192,6 @@ public class ProgressActivity extends BaseActivity {
     private void kill_video(int video_id) throws JSONException {
         JSONObject d = new JSONObject();
         JSONArray progress_array = new JSONArray();
-        double length = get_video_length(video_id)+0.5;
         double video_frame = 0;
         int learning_rate = 10;
         String ccid = getCcid(video_id + "");
@@ -203,25 +226,10 @@ public class ProgressActivity extends BaseActivity {
             https.init("https://bksycsu.yuketang.cn/video-log/heartbeat/");
             https.AttachCookie(cookie).AttachUser_Agent(getstring(R.string.user_agent)).AttachProperty("xtbz", "cloud").AttachProperty("x-csrftoken", x_csrftoken).AttachProperty("Content-Type", "application/json");
             https.POSTData(d.toString());
+            compelete_kill_course+=1;
+            new Handlers().sendEmptyMessage(3);
+    }
 
-    }
-    private double get_video_length(int video_id)throws JSONException{
-        String vurl=getstring(R.string.get_progress).replace("*",course_id).replace("#",user_id).replace("%",classroom_id).replace("!",video_id+"");
-        HttpSupport http=new HttpSupport();
-        http.init(vurl);
-        http.AttachCookie(cookie).AttachUser_Agent(getstring(R.string.user_agent)).AttachProperty("x-csrftoken",x_csrftoken).AttachProperty("xtbz","cloud").AttachProperty("university-id",uv_id);
-        String[] response=http.getHtml();
-        if(response[0].equals("200")){
-            video_detail=response[1];
-            if(video_detail.contains("video_length")) {
-                JSONObject video_data = new JSONObject(video_detail).getJSONObject("data").getJSONObject(video_id + "");
-                return video_data.getDouble("video_length");
-            }
-            else return 0;
-        }else{
-            return get_video_length(video_id);
-        }
-    }
     @SuppressLint("HandlerLeak")
     private class Handlers extends Handler{
         public Handlers(){
@@ -235,11 +243,28 @@ public class ProgressActivity extends BaseActivity {
                     lv.setAdapter(adapter);
                     course_num.setText("共"+course_num_num+"个可刷作业");
                     load_dialog.dismiss();
+                    complete_quire=0;
                     break;
                 case 1:
                     ShortToastFactorySupport.makeText(getstring(R.string.get_course_failed),R.drawable.bcp).show();
                     finish();
                     break;
+                case 2:
+                    load_dialog.dismiss();
+                    compelete_kill_course=0;
+                    ShortToastFactorySupport.makeText(getstring(R.string.kill_course_complete),R.drawable.bd9).show();
+                    break;
+                case 3:
+                    DialogFactorySupport.changeText(getstring(R.string.kill_course_num).replace("b",set_video.length()+"").replace("a",compelete_kill_course+""));
+                    break;
+                case 4:
+                    load_dialog=DialogFactorySupport.SimpleProgressDialog(getstring(R.string.course_load),false);
+                    break;
+                case 200:
+                    DialogFactorySupport.changeText(getstring(R.string.quire_num_show).replace("a",complete_quire+"").replace("b",course_num_num+""));
+                    break;
+                case 100:
+                    load_dialog=DialogFactorySupport.SimpleProgressDialog(getstring(R.string.kill_course_num).replace("a","0").replace("b",set_video.length()+""),false);
             }
         }
     }
@@ -254,11 +279,12 @@ public class ProgressActivity extends BaseActivity {
 					course_data = new JSONObject(msg[1]);
 					course_data=course_data.getJSONObject("data");
 					course_datas=course_data.getJSONArray("course_chapter");
+					getInquireNum();
 					listitem();
 				}
 				catch (JSONException e)
 				{
-				    e.printStackTrace();
+				    //e.printStackTrace();
                 }
 				new Handlers().sendEmptyMessage(0);
 			}
@@ -272,6 +298,7 @@ public class ProgressActivity extends BaseActivity {
 		{
 			// TODO: Implement this method
 			super.run();
+			new Handlers().sendEmptyMessage(100);
 			for(int i=0;i<set_video.length();i++){
 				try
 				{
@@ -280,9 +307,17 @@ public class ProgressActivity extends BaseActivity {
 				}
 				catch (JSONException e)
 				{
-					e.printStackTrace();
+					//e.printStackTrace();
 				}
 			}
-		}
+			new Handlers().sendEmptyMessage(2);
+            try {
+                new Handlers().sendEmptyMessage(4);
+                listitem();
+                new Handlers().sendEmptyMessage(0);
+            } catch (JSONException e) {
+                //
+            }
+        }
 	}
 }
