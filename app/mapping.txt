@@ -1,7 +1,7 @@
 # compiler: R8
 # compiler_version: 2.1.86
 # min_api: 14
-# pg_map_id: afd3876
+# pg_map_id: d0b1616
 # common_typos_disable
 Support.AnimSupport -> O00000000OOoOO0.O00000000OOoOO0:
     1:1:byte[] Support.ByteTransformSupport.Base64Decode(java.lang.String):37:37 -> O00000000OOoOO0
@@ -101,50 +101,52 @@ Support.BaseActivity -> O00000000OOoOO0.O00000000OoO000:
     47:48:void Support.SystemSupport.<init>(android.content.Context):15:16 -> O00000000OoO000
     47:48:void initActivity(android.content.Context):64 -> O00000000OoO000
     49:50:void initActivity(android.content.Context):67:68 -> O00000000OoO000
-    51:51:void initActivity(android.content.Context):70:70 -> O00000000OoO000
-    52:52:double Support.SystemServiceSupport.getSystemVersion():233:233 -> O00000000OoO000
-    52:52:void initActivity(android.content.Context):73 -> O00000000OoO000
-    53:54:void initActivity(android.content.Context):74:75 -> O00000000OoO000
-    55:55:void initActivity(android.content.Context):77:77 -> O00000000OoO000
-    56:56:void initfile():197:197 -> O00000000OoO000
-    56:56:void initActivity(android.content.Context):78 -> O00000000OoO000
-    57:57:boolean Support.SharedPreferencesSupport.isnull(java.lang.String):37:37 -> O00000000OoO000
-    57:57:void initfile():197 -> O00000000OoO000
-    57:57:void initActivity(android.content.Context):78 -> O00000000OoO000
-    58:58:java.lang.String Support.MD5Support.getStringRandoms():100:100 -> O00000000OoO000
-    58:58:void initfile():198 -> O00000000OoO000
-    58:58:void initActivity(android.content.Context):78 -> O00000000OoO000
-    59:59:java.lang.String Support.MD5Support.getStringRandoms():105:105 -> O00000000OoO000
-    59:59:void initfile():198 -> O00000000OoO000
+    51:52:void initActivity(android.content.Context):70:71 -> O00000000OoO000
+    53:54:void Support.SystemServiceSupport.checkNetWork():97:98 -> O00000000OoO000
+    53:54:void initActivity(android.content.Context):71 -> O00000000OoO000
+    55:55:double Support.SystemServiceSupport.getSystemVersion():233:233 -> O00000000OoO000
+    55:55:void initActivity(android.content.Context):73 -> O00000000OoO000
+    56:57:void initActivity(android.content.Context):74:75 -> O00000000OoO000
+    58:58:void initActivity(android.content.Context):77:77 -> O00000000OoO000
+    59:59:void initfile():197:197 -> O00000000OoO000
     59:59:void initActivity(android.content.Context):78 -> O00000000OoO000
-    60:60:java.lang.String Support.MD5Support.getStringRandoms():107:107 -> O00000000OoO000
-    60:60:void initfile():198 -> O00000000OoO000
+    60:60:boolean Support.SharedPreferencesSupport.isnull(java.lang.String):37:37 -> O00000000OoO000
+    60:60:void initfile():197 -> O00000000OoO000
     60:60:void initActivity(android.content.Context):78 -> O00000000OoO000
-    61:63:java.lang.String Support.MD5Support.getStringRandoms():109:111 -> O00000000OoO000
-    61:63:void initfile():198 -> O00000000OoO000
-    61:63:void initActivity(android.content.Context):78 -> O00000000OoO000
-    64:64:void initfile():199:199 -> O00000000OoO000
-    64:64:void initActivity(android.content.Context):78 -> O00000000OoO000
-    65:65:void Support.SharedPreferencesSupport.putString(java.lang.String,java.lang.String,java.lang.String):13:13 -> O00000000OoO000
-    65:65:void initfile():199 -> O00000000OoO000
-    65:65:void initActivity(android.content.Context):78 -> O00000000OoO000
-    66:66:void initfile():200:200 -> O00000000OoO000
-    66:66:void initActivity(android.content.Context):78 -> O00000000OoO000
-    67:67:byte[] Support.MD5Support.toString(android.content.Context,java.lang.String):132:132 -> O00000000OoO000
-    67:67:void initfile():200 -> O00000000OoO000
+    61:61:java.lang.String Support.MD5Support.getStringRandoms():100:100 -> O00000000OoO000
+    61:61:void initfile():198 -> O00000000OoO000
+    61:61:void initActivity(android.content.Context):78 -> O00000000OoO000
+    62:62:java.lang.String Support.MD5Support.getStringRandoms():105:105 -> O00000000OoO000
+    62:62:void initfile():198 -> O00000000OoO000
+    62:62:void initActivity(android.content.Context):78 -> O00000000OoO000
+    63:63:java.lang.String Support.MD5Support.getStringRandoms():107:107 -> O00000000OoO000
+    63:63:void initfile():198 -> O00000000OoO000
+    63:63:void initActivity(android.content.Context):78 -> O00000000OoO000
+    64:66:java.lang.String Support.MD5Support.getStringRandoms():109:111 -> O00000000OoO000
+    64:66:void initfile():198 -> O00000000OoO000
+    64:66:void initActivity(android.content.Context):78 -> O00000000OoO000
+    67:67:void initfile():199:199 -> O00000000OoO000
     67:67:void initActivity(android.content.Context):78 -> O00000000OoO000
-    68:68:byte[] Support.MD5Support.toString(android.content.Context,java.lang.String):135:135 -> O00000000OoO000
-    68:68:void initfile():200 -> O00000000OoO000
+    68:68:void Support.SharedPreferencesSupport.putString(java.lang.String,java.lang.String,java.lang.String):13:13 -> O00000000OoO000
+    68:68:void initfile():199 -> O00000000OoO000
     68:68:void initActivity(android.content.Context):78 -> O00000000OoO000
-    69:72:void Support.IOSupport.WriteFile(android.content.Context,byte[],java.lang.String):413:416 -> O00000000OoO000
-    69:72:void initfile():200 -> O00000000OoO000
-    69:72:void initActivity(android.content.Context):78 -> O00000000OoO000
-    73:73:void Support.SystemSupport.<init>(android.content.Context):18:18 -> O00000000OoO000
-    73:73:void initActivity(android.content.Context):64 -> O00000000OoO000
-    74:74:java.lang.String getAppName():167:167 -> O00000000OoO000
-    74:74:void initActivity(android.content.Context):53 -> O00000000OoO000
-    75:75:android.graphics.drawable.Drawable getPackageIcon():115:115 -> O00000000OoO000
-    75:75:void initActivity(android.content.Context):52 -> O00000000OoO000
+    69:69:void initfile():200:200 -> O00000000OoO000
+    69:69:void initActivity(android.content.Context):78 -> O00000000OoO000
+    70:70:byte[] Support.MD5Support.toString(android.content.Context,java.lang.String):132:132 -> O00000000OoO000
+    70:70:void initfile():200 -> O00000000OoO000
+    70:70:void initActivity(android.content.Context):78 -> O00000000OoO000
+    71:71:byte[] Support.MD5Support.toString(android.content.Context,java.lang.String):135:135 -> O00000000OoO000
+    71:71:void initfile():200 -> O00000000OoO000
+    71:71:void initActivity(android.content.Context):78 -> O00000000OoO000
+    72:75:void Support.IOSupport.WriteFile(android.content.Context,byte[],java.lang.String):413:416 -> O00000000OoO000
+    72:75:void initfile():200 -> O00000000OoO000
+    72:75:void initActivity(android.content.Context):78 -> O00000000OoO000
+    76:76:void Support.SystemSupport.<init>(android.content.Context):18:18 -> O00000000OoO000
+    76:76:void initActivity(android.content.Context):64 -> O00000000OoO000
+    77:77:java.lang.String getAppName():167:167 -> O00000000OoO000
+    77:77:void initActivity(android.content.Context):53 -> O00000000OoO000
+    78:78:android.graphics.drawable.Drawable getPackageIcon():115:115 -> O00000000OoO000
+    78:78:void initActivity(android.content.Context):52 -> O00000000OoO000
     1:2:boolean onKeyDown(int,android.view.KeyEvent):185:186 -> onKeyDown
     3:3:void Support.DialogSupport.SimpleExitDialog(boolean):15:15 -> onKeyDown
     3:3:boolean onKeyDown(int,android.view.KeyEvent):186 -> onKeyDown
@@ -715,18 +717,3 @@ waste.time.yuketang.ProgressActivity$lesson_killer -> waste.time.yuketang.Progre
     8:9:void run():305:306 -> run
     10:10:void run():313:313 -> run
     11:13:void run():315:317 -> run
-waste.time.yuketang.Tmp -> waste.time.yuketang.Tmp:
-    1:1:void <init>():15:15 -> <init>
-    1:1:void onCreate():18:18 -> onCreate
-    2:2:void handleSSLHandshake():23:23 -> onCreate
-    2:2:void onCreate():19 -> onCreate
-    3:3:void handleSSLHandshake():37:37 -> onCreate
-    3:3:void onCreate():19 -> onCreate
-    4:6:void handleSSLHandshake():39:41 -> onCreate
-    4:6:void onCreate():19 -> onCreate
-    7:7:void handleSSLHandshake():48:48 -> onCreate
-    7:7:void onCreate():19 -> onCreate
-waste.time.yuketang.Tmp$1 -> O00000000OoO000.O00000000OOoOO0.O00000000OOoOO0.O00000000o00OO0:
-    1:1:void <init>():23:23 -> <init>
-waste.time.yuketang.Tmp$2 -> O00000000OoO000.O00000000OOoOO0.O00000000OOoOO0.O0000000OoOo0O0:
-    1:1:void <init>():41:41 -> <init>

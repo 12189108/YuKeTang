@@ -68,7 +68,7 @@ public class BaseActivity extends Activity
 		SharedPreferencesSupport=new SharedPreferencesSupport(context);
 		WRAP_CONTENT=LinearLayout.LayoutParams.WRAP_CONTENT;
 		MATCH_PARENT=LinearLayout.LayoutParams.MATCH_PARENT;
-		//SystemServiceSupport.checkNetWork();
+		SystemServiceSupport.checkNetWork();
 		//if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 		if(SystemServiceSupport.getSystemVersion()>=5){
 			getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE);

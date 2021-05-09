@@ -14,7 +14,6 @@ Support.SystemServiceSupport:
     public java.lang.String getSystemversionName()
     public int getSystemversionCode()
     public boolean isCN()
-    public void checkNetWork()
     public void CopytoSystem(java.lang.String)
     public java.lang.String getcopyString()
     public void hideKeyboard(android.view.View)
@@ -315,6 +314,7 @@ Support.SystemServiceSupport:
     public static final int getSystemSDK()
     public static double getSystemVersion()
     public java.lang.String getPackageName()
+    public void checkNetWork()
     public void toKill()
     public double getWindowHight()
     public java.lang.String androids
@@ -416,8 +416,6 @@ waste.time.yuketang.ProgressActivity$lesson_killer:
 Support.LongToastFactorySupport:
     public Support.LongToastFactorySupport makeText(java.lang.String,int)
     public final double gettoasty()
-waste.time.yuketang.Tmp:
-    public static void handleSSLHandshake()
 Support.ShortToastFactorySupport:
     public double gettoasty()
 Support.DialogSupport:
