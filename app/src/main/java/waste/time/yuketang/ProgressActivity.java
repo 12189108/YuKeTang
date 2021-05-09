@@ -6,7 +6,6 @@ import android.app.*;
 import android.os.*;
 import android.view.*;
 import android.widget.ListView;
-import android.widget.TextView;
 import java.text.DecimalFormat;
 import java.util.*;
 
@@ -44,7 +43,9 @@ public class ProgressActivity extends BaseActivity {
             classroom_id=data.getString("classroom_id");
             video_url=getstring(R.string.video_id_url).replace("*",data.getString("classroom_id")).replace("#",data.getString("course_sign")).replace("%",uv_id);
         }
-        catch (JSONException e) {}
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
         new Process().start();
 	}
 	public void kill_lesson(View v){
@@ -64,7 +65,7 @@ public class ProgressActivity extends BaseActivity {
         http.AttachCookie(cookie).AttachUser_Agent(getstring(R.string.user_agent)).AttachProperty("university-id",uv_id).AttachProperty("xtbz","cloud");
         return http.getHtml();
     }
-    private boolean compete_state(String video_id) throws JSONException {
+    private boolean compete_state(String video_id){
         String vurl=getstring(R.string.get_progress).replace("*",course_id).replace("#",user_id).replace("%",classroom_id).replace("!",video_id);
         HttpSupport http=new HttpSupport();
         http.init(vurl);
@@ -96,6 +97,7 @@ public class ProgressActivity extends BaseActivity {
         }
         return getstring(R.string.show_progress).replace("#","0");
     }
+
     private boolean getDiscussion_state(String discussion_id) throws JSONException {
         HttpSupport http=new HttpSupport();
         http.init(getstring(R.string.get_discussion_state_url).replace("*",discussion_id).replace("#",classroom_id)+uv_id);
@@ -112,7 +114,7 @@ public class ProgressActivity extends BaseActivity {
     private void listitem() throws JSONException {
         course_num_num = 0;
         set_video=new JSONArray();
-        List<Course_data> list=new ArrayList<Course_data>();
+        List<Course_data> list=new ArrayList<>();
         for(int i=0;i<course_datas.length();i++){
            JSONArray tmp=course_datas.getJSONObject(i).getJSONArray("section_leaf_list");
            for(int n=1;n<tmp.length();n++){
@@ -139,6 +141,12 @@ public class ProgressActivity extends BaseActivity {
                    JSONObject tmp3=tmp2;
                    boolean complete=getDiscussion_state(tmp3.getString("id"));
                    list.add(new Course_data(course_datas.getJSONObject(i).getString("name")+tmp3.getString("name"),complete?"已完成":"未开始",complete,tmp3.getInt("leaf_type"),complete?getResources().getDrawable(R.drawable.bd9) : getResources().getDrawable(R.drawable.bcp),!complete));
+                   if(!complete&&tmp3.getInt("leaf_type")==0){
+                       JSONObject tmp_js = new JSONObject();
+                       tmp_js.put("video_id", tmp3.getInt("id"));
+                       tmp_js.put("list_position", list.size() - 1);
+                       set_video.put(tmp_js);
+                   }
                }
            }
         }
@@ -158,44 +166,61 @@ public class ProgressActivity extends BaseActivity {
         else return getCcid(video_id);
     }
     private void kill_video(int video_id) throws JSONException {
-        JSONObject d=new JSONObject();
+        JSONObject d = new JSONObject();
         JSONArray progress_array = new JSONArray();
-        int video_frame = 0;
-        int learning_rate = 20;
-		/*String ccid=getCcid(video_id+"");
-        for(int i=0;i<=49;i++){
-            JSONObject tmpjs = new JSONObject();
-            tmpjs.put("i",5);
-            tmpjs.put("et","loadeddata");
-            tmpjs.put("p","web");
-			tmpjs.put("n","sjy-cdn.xuetangx.com");
-            tmpjs.put("lob","cloud4");
-            tmpjs.put("cp",video_frame);
-            tmpjs.put("sp",1);
-            tmpjs.put("tp",0);
-            tmpjs.put("fp",0);
-            tmpjs.put("ts",System.currentTimeMillis()+"");
-            tmpjs.put("u",Integer.valueOf(user_id));
-            tmpjs.put("uip","");
-            tmpjs.put("c",Integer.valueOf(course_id));
-            tmpjs.put("v",video_id);
-            tmpjs.put("skuid",sku_id);
-            tmpjs.put("classrommid",Integer.valueOf(classroom_id));
-            tmpjs.put("cc",ccid);
-            tmpjs.put("d",0);
-            tmpjs.put("pg",video_id+"_wlnd");
-            tmpjs.put("sq",1);
-            tmpjs.put("t","video");
-            progress_array.put(tmpjs);
-            video_frame+=learning_rate;
-        }*/
-        d.put("heart_data",progress_array);
-        HttpSupport https= new HttpSupport();
-        https.init("https://bksycsu.yuketang.cn/video-log/heartbeat/");
-        https.AttachCookie(cookie).AttachUser_Agent(getstring(R.string.user_agent)).AttachProperty("xtbz","cloud").AttachProperty("x-csrftoken",x_csrftoken).AttachProperty("Content-Type","application/json");
-        String[] response=https.POSTData(d.toString());
-		SystemServiceSupport.CopytoSystem(response[1]);
-		
+        double length = get_video_length(video_id)+0.5;
+        double video_frame = 0;
+        int learning_rate = 10;
+        String ccid = getCcid(video_id + "");
+            for (int i = 0; i <=300; i++) {
+                JSONObject tmpjs = new JSONObject();
+                tmpjs.put("i", 5);
+                tmpjs.put("et", "loadeddata");
+                tmpjs.put("p", "web");
+                tmpjs.put("n", "sjy-cdn.xuetangx.com");
+                tmpjs.put("lob", "cloud4");
+                tmpjs.put("cp", video_frame);
+                tmpjs.put("sp", 1);
+                tmpjs.put("tp", 0);
+                tmpjs.put("fp", 0);
+                tmpjs.put("ts", System.currentTimeMillis() + "");
+                tmpjs.put("u", Integer.valueOf(user_id));
+                tmpjs.put("uip", "");
+                tmpjs.put("c", Integer.valueOf(course_id));
+                tmpjs.put("v", video_id);
+                tmpjs.put("skuid", sku_id);
+                tmpjs.put("classroomid", classroom_id);
+                tmpjs.put("cc", ccid);
+                tmpjs.put("d", 3000);
+                tmpjs.put("pg", video_id + "_wlnd");
+                tmpjs.put("sq", 1);
+                tmpjs.put("t", "video");
+                progress_array.put(tmpjs);
+                video_frame += learning_rate;
+            }
+            d.put("heart_data", progress_array);
+            HttpSupport https = new HttpSupport();
+            https.init("https://bksycsu.yuketang.cn/video-log/heartbeat/");
+            https.AttachCookie(cookie).AttachUser_Agent(getstring(R.string.user_agent)).AttachProperty("xtbz", "cloud").AttachProperty("x-csrftoken", x_csrftoken).AttachProperty("Content-Type", "application/json");
+            https.POSTData(d.toString());
+
+    }
+    private double get_video_length(int video_id)throws JSONException{
+        String vurl=getstring(R.string.get_progress).replace("*",course_id).replace("#",user_id).replace("%",classroom_id).replace("!",video_id+"");
+        HttpSupport http=new HttpSupport();
+        http.init(vurl);
+        http.AttachCookie(cookie).AttachUser_Agent(getstring(R.string.user_agent)).AttachProperty("x-csrftoken",x_csrftoken).AttachProperty("xtbz","cloud").AttachProperty("university-id",uv_id);
+        String[] response=http.getHtml();
+        if(response[0].equals("200")){
+            video_detail=response[1];
+            if(video_detail.contains("video_length")) {
+                JSONObject video_data = new JSONObject(video_detail).getJSONObject("data").getJSONObject(video_id + "");
+                return video_data.getDouble("video_length");
+            }
+            else return 0;
+        }else{
+            return get_video_length(video_id);
+        }
     }
     @SuppressLint("HandlerLeak")
     private class Handlers extends Handler{
@@ -255,7 +280,7 @@ public class ProgressActivity extends BaseActivity {
 				}
 				catch (JSONException e)
 				{
-					SystemServiceSupport.CopytoSystem(e.toString());
+					e.printStackTrace();
 				}
 			}
 		}
