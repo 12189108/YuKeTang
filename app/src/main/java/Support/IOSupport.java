@@ -29,7 +29,7 @@ public class IOSupport
 		deletenonulldir(new File("data/data/"+con.getPackageName()+"/"+"app_webview"));
 		test(new File("/data/data/"+con.getPackageName()+"/"+"app_webview"));
 		deletenonulldir(con.getCacheDir());
-		delectDirs("data/data/"+con.getPackageName()+"/code_cache");
+		deleteDirs("data/data/"+con.getPackageName()+"/code_cache");
 		test(con.getCacheDir());
 	}
 	public static String getsddir(String f){
@@ -523,21 +523,19 @@ public class IOSupport
 	public static abstract interface onError{
 		public abstract void onError(Throwable e);
 	}
-	public static void delectDirs(File f){
+	public static void deleteDirs(File f){
 		if(f.isFile())f.delete();
 		else{
 			File[] fs=f.listFiles();
-			if(fs!=null&&fs.length!=0){
-				for(int i=0;i<fs.length;i++){
-					if(fs[i].isFile())fs[i].delete();
-					else delectDirs(fs[i]);
-				}
+			for (int i = 0; i < fs.length; i++) {
+				if (fs[i].isFile()) fs[i].delete();
+				else deleteDirs(fs[i]);
 			}
-			f.delete();
 		}
+		f.delete();
 	}
-	public static void delectDirs(String path){
-		delectDirs(new File(path));
+	public static void deleteDirs(String path){
+		deleteDirs(new File(path));
 	}
 	}
 	

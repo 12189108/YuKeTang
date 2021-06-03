@@ -47,6 +47,7 @@ public class ProgressActivity extends BaseActivity {
         catch (JSONException e) {
             e.printStackTrace();
         }
+
         new Process().start();
 	}
 	public void kill_lesson(View v){

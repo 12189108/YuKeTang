@@ -3,6 +3,7 @@ package waste.time.yuketang;
 import Support.BaseActivity;
 import Support.ByteTransformSupport;
 import Support.EditTexts;
+import Support.IOSupport;
 import Support.MD5Support;
 
 import android.content.Intent;
@@ -12,6 +13,10 @@ import android.os.Looper;
 import android.os.Message;
 import android.view.View;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URI;
 
 
@@ -27,6 +32,7 @@ public class LoginActivity extends BaseActivity {
         setContentView(R.layout.login);
         setTabTitle(getstring(R.string.login_title));
         cookies=findViewById(R.id.cookie);
+        //ShortToastFactorySupport.makeText(getFilesDir().getAbsolutePath()).show();
         //ShortToastFactorySupport.makeText(System.currentTimeMillis()+"").show();
     }
   public void save(View v){

@@ -64,7 +64,7 @@ public class LogSupport
 		return loger;
 	}
 	public void clearLog(){
-		IOSupport.delectDirs(paths);
+		IOSupport.deleteDirs(paths);
 		prepareFileDir();
 	}
 }

@@ -17,13 +17,13 @@ android {
             keyPassword '12189108'
         }
     }
-    compileSdkVersion 30
+    compileSdkVersion 28
     buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "waste.time.yuketang"
         minSdkVersion 14
-        targetSdkVersion 30
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
 
@@ -41,8 +41,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility 1.7
+        targetCompatibility "1.7"
     }
 }
 
