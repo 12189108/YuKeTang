@@ -19,7 +19,7 @@ public class DownloadsSupport extends Thread
 	private long counted;
 	private HttpURLConnection uc;
 	public DownloadsSupport(Context c,String url,String filename){
-	this.c=c;this.url=url;this.filename=filename;c.getMainLooper().prepare();Handlers=new Handlers();
+	this.c=c;this.url=url;this.filename=filename;Handlers=new Handlers();
 	}
 	public DownloadsSupport setonDownloadListener(onDownloadListener onDownloadListener)
 	{this.onDownloadListener = onDownloadListener;return this;}

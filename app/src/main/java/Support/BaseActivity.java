@@ -30,7 +30,6 @@ public class BaseActivity extends Activity
 	public IOHelperSupport IOHelperSupport;
 	public SystemSupport SystemSupport;
 	public SystemServiceSupport SystemServiceSupport;
-	public ServiceSupport ServiceSupport;
 	public SharedPreferencesSupport SharedPreferencesSupport;
 	public int WRAP_CONTENT,MATCH_PARENT;
 	public Context Context;
@@ -62,14 +61,13 @@ public class BaseActivity extends Activity
 		//SystemServiceSupport.checkKeyboard(this,SystemServiceSupport.getString(this,R.string.LTitle));
 		IOHelperSupport=new IOHelperSupport(context);
 		SystemSupport=new SystemSupport(context);
-		ServiceSupport=new ServiceSupport();
 		DeviceSupport=new DeviceSupport(context);
 		SystemServiceSupport.getProcess();
 		SharedPreferencesSupport=new SharedPreferencesSupport(context);
 		WRAP_CONTENT=LinearLayout.LayoutParams.WRAP_CONTENT;
 		MATCH_PARENT=LinearLayout.LayoutParams.MATCH_PARENT;
-		SystemServiceSupport.checkNetWork();
-		//if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+		//SystemServiceSupport.checkNetWork();
+		//if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITAT)getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 		if(SystemServiceSupport.getSystemVersion()>=5){
 			getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE);
 			getWindow().setStatusBarColor(getResources().getColor(R.color.bg));

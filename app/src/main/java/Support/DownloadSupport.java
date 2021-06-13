@@ -1,6 +1,10 @@
 package Support;
 import android.content.Context;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -8,8 +12,10 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InterruptedIOException;
 import java.io.RandomAccessFile;
 import java.math.*;
 import java.net.HttpURLConnection;
@@ -23,10 +29,11 @@ public class DownloadSupport
 	private long mfilelength;
 	private boolean init=false,stop=false;
 	private File targetdata;
-	private long[] startPosition,endPosition;
+	private long[] startPosition,endPosition,existThreadId;
 	private DownloadListener mDownloadListener;
-	private int ThreadNum=4;
-	private long currrentDownloaded=0;
+	private int ThreadNum=4,ThreadStarted=-1;
+	private int loadedThread=0;
+	private long currrentDownloaded=0,block;
 	private RandomAccessFile raf;
 	public DownloadSupport(Context mContext, String downurl, String targetpath){
 		this.downloadurl=downurl;
@@ -46,43 +53,61 @@ public class DownloadSupport
 	public void initTask(){
 		new Config().start();
 	}
-	public void startDownload(){
+	private void startDownload(){
 		if(mDownloadListener!=null)new ProcessLintener().start();
-		for(int i=0;i<ThreadNum;i++){
-			new DownloadThread(i).start();
+		stop=false;
+		for(int i=0;i<existThreadId.length;i++){
+			new DownloadThread((int)existThreadId[i]).start();
 		}
 	}
 	public void stopDownload(){
 		stop=true;
 	}
-	public void initConfig(){
+	private void initConfig(){
 		try {
 			startPosition=new long[ThreadNum];
 			endPosition=new long[ThreadNum];
 			File content=new File(targetpath);
+			if(!content.getParentFile().exists())content.getParentFile().mkdirs();
 			if(!content.exists())content.createNewFile();
 			File datadir=mContext.getFilesDir();
-			if(!datadir.exists())datadir.mkdir();
+			if(!datadir.exists())datadir.mkdirs();
 			targetdata = new File(datadir.getAbsolutePath() + "/" + content.getName());
 			if(!targetdata.exists())targetdata.mkdir();
 			File msg=new File(targetdata.getAbsolutePath()+"/init.data");
 			long undownloaded=0;
 			if(msg.exists()) {
-				for (int i = 0; i < ThreadNum; i++) {
-					File data = new File(targetdata.getAbsolutePath() + "/" + i + ".data");
+				File[] files = targetdata.listFiles(new FilenameFilter() {
+					@Override
+					public boolean accept(File dir, String name) {
+						if(!name.startsWith("init"))return true;
+						return false;
+					}
+				});
+				int len = files.length;
+				existThreadId=new long[len];
+				for (int i = 0; i < len; i++) {
+					File data =files[i];
 					JSONObject contentjs = new JSONObject(getMsg(data));
-					startPosition[i]=contentjs.getLong("startPosition");
-					endPosition[i]=contentjs.getLong("endPosition");
-					undownloaded+=endPosition[i]-startPosition[i];
+					long ThreadId=Long.parseLong(data.getName().substring(0,data.getName().indexOf(".")));
+					existThreadId[i]=ThreadId;
+					startPosition[(int)ThreadId]=contentjs.getLong("startPosition");
+					endPosition[(int)ThreadId]=contentjs.getLong("endPosition");
+					undownloaded+=endPosition[(int)ThreadId]-startPosition[(int)ThreadId];
 				}
+				ThreadStarted=Integer.parseInt(getMsg(msg));
 			}else{
 				msg.createNewFile();
+				ThreadStarted=3;
 				undownloaded=mfilelength;
-				long block=mfilelength/ThreadNum;
-				for(int i=0;i<ThreadNum;i++){
+				WriteMsg(msg,3+"");
+				existThreadId=new long[4];
+				for(int i=0;i<4;i++){
+					existThreadId[i]=i;
 					JSONObject data = new JSONObject();
 					data.put("startPosition",block*i);
-					if(i!=ThreadNum-1) {
+					startPosition[i]=i*block;
+					if(i!=ThreadNum) {
 						data.put("endPosition",block*(i+1)-1);
 						endPosition[i]=block*(i+1)-1;
 					}
@@ -93,28 +118,32 @@ public class DownloadSupport
 					WriteMsg(new File(targetdata.getAbsolutePath() + "/" + i + ".data"),data.toString());
 				}
 			}
-			raf=new RandomAccessFile(targetpath,"rw");
+			raf=new RandomAccessFile(targetpath,"rwd");
 			raf.setLength(mfilelength);
+			raf.close();
 			init=true;
 			currrentDownloaded=mfilelength-undownloaded;
+			new ProcessLintener().start();
+			startDownload();
 		}catch (Throwable e){
-
+			if(mDownloadListener!=null)mDownloadListener.onInitFailed(e);
 		}
 	}
 	private void removeData(){
 		try {
-			Runtime.getRuntime().exec("rm -rf "+mContext.getFilesDir().getAbsolutePath()+"/"+new File(targetpath).getName());
+			String tmp="rm -rf "+mContext.getFilesDir().getAbsolutePath()+"/"+new File(targetpath).getName();
+			Runtime.getRuntime().exec(tmp);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	private String getMsg(File content){
-		return MD5Support.getString(mContext,ByteTransformSupport.File2Byte(content));
+		return new String(ByteTransformSupport.File2Byte(content));
 	}
 	private void WriteMsg(File target,String content){
 		try {
-			RandomAccessFile inforaf=new RandomAccessFile(target,"rwd");
-			inforaf.write(MD5Support.toString(mContext,content));
+			RandomAccessFile inforaf=new RandomAccessFile(target,"rw");
+			inforaf.write(content.getBytes());
 			inforaf.close();
 		} catch (Throwable e) {
 			e.printStackTrace();
@@ -131,6 +160,11 @@ public class DownloadSupport
 		}
 	}
 	private class Config extends Thread{
+
+		public Config(){
+			super();
+			Looper.getMainLooper();
+		}
 		@Override
 		public void run() {
 			super.run();
@@ -140,23 +174,27 @@ public class DownloadSupport
 				uc.setUseCaches(false);
 				uc.setInstanceFollowRedirects(true);
 				uc.setRequestProperty("Accept-Encoding", "identity");
-				uc.setRequestProperty("Content-Type","application/octet-stream;charset=utf-8");
+				uc.setRequestProperty("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36");
 				uc.setRequestMethod("GET");
 				uc.connect();
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-					mfilelength = uc.getContentLengthLong();
-				}else mfilelength=uc.getContentLength();
+				new SystemServiceSupport(mContext).CopytoSystem(uc.getResponseCode()+"");
+				String s=uc.getHeaderFields().toString();
+				//new SystemServiceSupport(mContext).CopytoSystem(uc.getHeaderFields().toString());
+				mfilelength =Long.parseLong(uc.getHeaderField("Content-Length"));
 				if(mDownloadListener!=null)mDownloadListener.onReceiveFileLength(mfilelength);
 				uc.disconnect();
-				if((int)(mfilelength/1024/1024)>4)ThreadNum= (int) (mfilelength/1024)+1;
+				if((int)(mfilelength/(1024*1024))>4)ThreadNum= (int) (mfilelength/(1024*1024))+1;
+				block=(long)mfilelength/ThreadNum;
 				initConfig();
 			}catch (Throwable e){
 				if(mDownloadListener!=null)mDownloadListener.onInitFailed(e);
 			}
 		}
 	}
-	public  class DownloadThread extends Thread{
+	private class DownloadThread extends Thread{
 		private int ThreadID;
+		private RandomAccessFile raff;
+		private HttpURLConnection uc;
 		public DownloadThread(int ThreadId){
 			this.ThreadID=ThreadId;
 		}
@@ -166,37 +204,64 @@ public class DownloadSupport
 			if(!init){
 				stop=true;
 				if(mDownloadListener!=null)mDownloadListener.onDownloadFailed(new Throwable("Init Failed or Init not star！"));
-				currentThread();
+				interrupt();
 			}
-			try {
+			if(startPosition[ThreadID]>=endPosition[ThreadID]){
+				loadedThread-=1;
+				new DownloadHandler().sendEmptyMessage(200);
+				interrupt();
+			}
+			else{
+				try {
 				URL Url = new URL(downloadurl);
-				HttpURLConnection uc = (HttpURLConnection) Url.openConnection();
+				uc = (HttpURLConnection) Url.openConnection();
 				uc.setUseCaches(false);
 				uc.setInstanceFollowRedirects(true);
 				uc.setRequestProperty("Accept-Encoding", "identity");
+				uc.setRequestProperty("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36");
 				uc.setRequestProperty("Range", "bytes="+startPosition[ThreadID]+"-"+endPosition[ThreadID]);
-				uc.setRequestProperty("Content-Type", "application/octet-stream;charset=utf-8");
 				uc.setRequestMethod("GET");
 				uc.setConnectTimeout(5000);
 				uc.connect();
-				RandomAccessFile raf=new RandomAccessFile(targetpath,"rw");
-				raf.seek(startPosition[ThreadID]);
+				raff=new RandomAccessFile(targetpath,"rw");
+				raff.seek(startPosition[ThreadID]);
 				byte[] buffer=new byte[1024*1024];
 				int len=-1;
 				long total=0;
 				InputStream is = uc.getInputStream();
-				while ((len=is.read(buffer))!=-1) {
-					raf.write(buffer,0,len);
+				while ((len=is.read(buffer))!=-1&&!stop) {
+					raff.write(buffer,0,len);
 					total+=len;
 					currrentDownloaded+=len;
 					//将每次更新的数据同步到底层硬盘
 					updateProcess(ThreadID,startPosition[ThreadID]+total);
-					if(stop)currentThread();
+					if(stop){
+						loadedThread-=1;
+						interrupt();
+						raff.close();
+						uc.disconnect();
+					}
 				}
-			}catch (Throwable e){
-				if(mDownloadListener!=null)mDownloadListener.onDownloadFailed(e);
-			}finally {
-				currentThread();
+				new File(targetdata.getAbsolutePath() + "/" + ThreadID+ ".data").delete();
+				}
+				catch (InterruptedIOException exit){
+
+				}
+				catch (Throwable e){
+						if (mDownloadListener != null) mDownloadListener.onDownloadFailed(e);
+						stop = true;
+				}finally {
+					loadedThread-=1;
+					new DownloadHandler().sendEmptyMessage(200);
+					interrupt();
+					if(uc!=null)uc.disconnect();
+					if(raff!=null) {
+						try {
+							raff.close();
+						} catch (IOException e) {
+						}
+					}
+				}
 			}
 		}
 	}
@@ -205,11 +270,50 @@ public class DownloadSupport
 		public void run() {
 			super.run();
 			try {
-				mDownloadListener.onDownload(currrentDownloaded);
-				if(stop||currrentDownloaded==mfilelength)currentThread();
-				sleep(250);
+				while(true) {
+					mDownloadListener.onDownload(currrentDownloaded);
+					if (currrentDownloaded>=mfilelength) {
+						removeData();
+						stop=true;
+					}
+					if (stop || currrentDownloaded>=mfilelength)interrupt();
+					sleep(250);
+				}
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+
+			}
+		}
+	}
+	private class DownloadHandler extends Handler{
+		public DownloadHandler(){
+			super(mContext.getMainLooper());
+		}
+
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			switch (msg.what){
+				case 200:
+					if(!stop&&loadedThread<=4&&(ThreadStarted+1)<ThreadNum){
+						loadedThread+=1;
+						ThreadStarted+=1;
+						WriteMsg(new File(targetdata.getAbsolutePath()+"/init.data"),ThreadStarted+"");
+						try {
+							JSONObject data = new JSONObject();
+							data.put("startPosition", block * ThreadStarted);
+							startPosition[ThreadStarted]=block*ThreadStarted;
+							if (ThreadStarted != ThreadNum) {
+								data.put("endPosition", block * (ThreadStarted) - 1);
+								endPosition[ThreadStarted] = block * (ThreadStarted + 1) - 1;
+							} else {
+								data.put("endPosition", mfilelength);
+								endPosition[ThreadStarted] = mfilelength;
+							}
+							WriteMsg(new File(targetdata.getAbsolutePath() + "/" + ThreadStarted + ".data"),data.toString());
+						}catch (Throwable e){ }
+						new DownloadThread(ThreadStarted).start();
+					}
+					break;
 			}
 		}
 	}

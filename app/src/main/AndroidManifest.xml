@@ -11,6 +11,7 @@
             android:icon="@drawable/ic_launcher"
             android:roundIcon="@drawable/ic_launcher_round"
             android:supportsRtl="true"
+            android:name=".TestApplication"
             android:theme="@style/AppTheme">
     <activity
         android:name=".LoginActivity">
@@ -23,5 +24,7 @@
             android:name=".ListActivity"/>
         <activity
             android:name=".ProgressActivity"/>
+        <activity
+            android:name=".TestDownload"/>
     </application>
 </manifest>
