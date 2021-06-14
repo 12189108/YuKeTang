@@ -156,7 +156,7 @@ public class DownloadSupport
 			Threaddata.put("startPosition",NextstartPosition);
 			WriteMsg(data,Threaddata.toString());
 		} catch (JSONException e) {
-	
+
 		}
 	}
 	private class Config extends Thread{
@@ -243,7 +243,7 @@ public class DownloadSupport
 					currrentDownloaded+=len;
 				}
 				new File(targetdata.getAbsolutePath() + "/" + ThreadID+ ".data").delete();
-				if(ThreadID+1==ThreadNum){
+				if(ThreadID+1==ThreadNum&&loadedThread==1){
 					removeData();
 					currrentDownloaded=mfilelength;
 				}
