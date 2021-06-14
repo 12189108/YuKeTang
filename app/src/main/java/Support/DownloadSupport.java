@@ -27,6 +27,7 @@ public class DownloadSupport
 	private String targetpath;
 	private Context mContext;
 	private long mfilelength;
+	private boolean[] ThreadCompleteState;
 	private boolean init=false,stop=false;
 	private File targetdata;
 	private long[] startPosition,endPosition,existThreadId;
@@ -67,6 +68,7 @@ public class DownloadSupport
 		try {
 			startPosition=new long[ThreadNum];
 			endPosition=new long[ThreadNum];
+			ThreadCompleteState=new boolean[ThreadNum];
 			File content=new File(targetpath);
 			if(!content.getParentFile().exists())content.getParentFile().mkdirs();
 			if(!content.exists())content.createNewFile();
@@ -194,6 +196,7 @@ public class DownloadSupport
 	private class DownloadThread extends Thread{
 		private int ThreadID;
 		private RandomAccessFile raff;
+		private boolean hasSendMessage=false;
 		private HttpURLConnection uc;
 		public DownloadThread(int ThreadId){
 			this.ThreadID=ThreadId;
@@ -229,7 +232,7 @@ public class DownloadSupport
 				int len=-1;
 				long total=0;
 				InputStream is = uc.getInputStream();
-				while ((len=is.read(buffer))!=-1&&!stop) {
+				while ((len=is.read(buffer))!=-1&&!stop&&!hasSendMessage) {
 					raff.write(buffer,0,len);
 					total+=len;
 					currrentDownloaded+=len;
@@ -242,10 +245,13 @@ public class DownloadSupport
 						uc.disconnect();
 					}
 				}
-				if(ThreadID+1==ThreadNum&&loadedThread==1){
-					removeData();
-					currrentDownloaded=mfilelength;
-				}
+				if(!hasSendMessage){
+					Message msg = new Message();
+					msg.what=200;
+					msg.arg1=ThreadID;
+					new DownloadHandler().sendMessage(msg);
+					hasSendMessage=true;
+					}
 				}
 				catch (InterruptedIOException exit){
 
@@ -255,10 +261,12 @@ public class DownloadSupport
 						stop = true;
 				}finally {
 					loadedThread-=1;
-					Message msg = new Message();
-					msg.what=200;
-					msg.arg1=ThreadID;
-					new DownloadHandler().sendMessage(msg);
+					if(!hasSendMessage){
+						Message msg = new Message();
+						msg.what=200;
+						msg.arg1=-1;
+						new DownloadHandler().sendMessage(msg);
+					}
 					interrupt();
 					if(uc!=null)uc.disconnect();
 					if(raff!=null) {
@@ -331,7 +339,7 @@ public class DownloadSupport
 						}catch (Throwable e){ }
 						new DownloadThread(ThreadStarted).start();
 					}
-					new File(targetdata.getAbsolutePath() + "/" + msg.arg1+ ".data").delete();
+					if(msg.arg1!=-1)new File(targetdata.getAbsolutePath() + "/" + msg.arg1+ ".data").delete();
 					break;
 			}
 		}
