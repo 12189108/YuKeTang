@@ -107,7 +107,7 @@ public class DownloadSupport
 					JSONObject data = new JSONObject();
 					data.put("startPosition",block*i);
 					startPosition[i]=i*block;
-					if(i!=ThreadNum) {
+					if(i!=ThreadNum-1) {
 						data.put("endPosition",block*(i+1)-1);
 						endPosition[i]=block*(i+1)-1;
 					}
@@ -156,7 +156,7 @@ public class DownloadSupport
 			Threaddata.put("startPosition",NextstartPosition);
 			WriteMsg(data,Threaddata.toString());
 		} catch (JSONException e) {
-			e.printStackTrace();
+	
 		}
 	}
 	private class Config extends Thread{
@@ -232,7 +232,6 @@ public class DownloadSupport
 				while ((len=is.read(buffer))!=-1&&!stop) {
 					raff.write(buffer,0,len);
 					total+=len;
-					currrentDownloaded+=len;
 					//将每次更新的数据同步到底层硬盘
 					updateProcess(ThreadID,startPosition[ThreadID]+total);
 					if(stop){
@@ -241,8 +240,13 @@ public class DownloadSupport
 						raff.close();
 						uc.disconnect();
 					}
+					currrentDownloaded+=len;
 				}
 				new File(targetdata.getAbsolutePath() + "/" + ThreadID+ ".data").delete();
+				if(ThreadID+1==ThreadNum){
+					removeData();
+					currrentDownloaded=mfilelength;
+				}
 				}
 				catch (InterruptedIOException exit){
 
@@ -302,7 +306,7 @@ public class DownloadSupport
 							JSONObject data = new JSONObject();
 							data.put("startPosition", block * ThreadStarted);
 							startPosition[ThreadStarted]=block*ThreadStarted;
-							if (ThreadStarted != ThreadNum) {
+							if (ThreadStarted != ThreadNum-1) {
 								data.put("endPosition", block * (ThreadStarted) - 1);
 								endPosition[ThreadStarted] = block * (ThreadStarted + 1) - 1;
 							} else {

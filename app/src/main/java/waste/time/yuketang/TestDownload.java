@@ -55,6 +55,7 @@ public class TestDownload extends BaseActivity implements DownloadSupport.Downlo
         pb.setMax((int) fileLength);
         new Handers().sendEmptyMessage(200);
         msgs=fileLength+"";
+        SystemServiceSupport.CopytoSystem(fileLength+"");
     }
 
     @Override
