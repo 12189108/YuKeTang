@@ -232,6 +232,7 @@ public class DownloadSupport
 				while ((len=is.read(buffer))!=-1&&!stop) {
 					raff.write(buffer,0,len);
 					total+=len;
+					currrentDownloaded+=len;
 					//将每次更新的数据同步到底层硬盘
 					updateProcess(ThreadID,startPosition[ThreadID]+total);
 					if(stop){
@@ -240,9 +241,7 @@ public class DownloadSupport
 						raff.close();
 						uc.disconnect();
 					}
-					currrentDownloaded+=len;
 				}
-				new File(targetdata.getAbsolutePath() + "/" + ThreadID+ ".data").delete();
 				if(ThreadID+1==ThreadNum&&loadedThread==1){
 					removeData();
 					currrentDownloaded=mfilelength;
@@ -256,7 +255,10 @@ public class DownloadSupport
 						stop = true;
 				}finally {
 					loadedThread-=1;
-					new DownloadHandler().sendEmptyMessage(200);
+					Message msg = new Message();
+					msg.what=200;
+					msg.arg1=ThreadID;
+					new DownloadHandler().sendMessage(msg);
 					interrupt();
 					if(uc!=null)uc.disconnect();
 					if(raff!=null) {
@@ -274,12 +276,24 @@ public class DownloadSupport
 		public void run() {
 			super.run();
 			try {
-				while(true) {
-					mDownloadListener.onDownload(currrentDownloaded);
-					if (currrentDownloaded>=mfilelength) {
+				while(!stop) {
+					File[] files = targetdata.listFiles(new FilenameFilter() {
+						@Override
+						public boolean accept(File dir, String name) {
+							if(!name.startsWith("init"))return true;
+							return false;
+						}
+					});
+					File tmpfile=new File(targetdata.getAbsolutePath()+"/init.data");
+					long con=0;
+					if(tmpfile.exists())con=Long.parseLong(getMsg(tmpfile));
+					else con=mfilelength;
+					if (currrentDownloaded>=mfilelength||(files.length==0&&con==ThreadNum-1)) {
+						currrentDownloaded=mfilelength;
 						removeData();
 						stop=true;
 					}
+					mDownloadListener.onDownload(currrentDownloaded);
 					if (stop || currrentDownloaded>=mfilelength)interrupt();
 					sleep(250);
 				}
@@ -317,6 +331,7 @@ public class DownloadSupport
 						}catch (Throwable e){ }
 						new DownloadThread(ThreadStarted).start();
 					}
+					new File(targetdata.getAbsolutePath() + "/" + msg.arg1+ ".data").delete();
 					break;
 			}
 		}

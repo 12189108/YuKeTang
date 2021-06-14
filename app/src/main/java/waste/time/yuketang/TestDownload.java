@@ -8,6 +8,7 @@ import android.os.Message;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import Support.BaseActivity;
 import Support.DownloadSupport;
@@ -17,6 +18,8 @@ public class TestDownload extends BaseActivity implements DownloadSupport.Downlo
     private ProgressBar pb;
     private DownloadSupport DownloadTask;
     private String msgs;
+    private long pr=0,ml=0;
+    private android.widget.TextView tv;
     private DownloadsSupport d;
 
     @Override
@@ -25,6 +28,7 @@ public class TestDownload extends BaseActivity implements DownloadSupport.Downlo
         initActivity(this);
         setContentView(R.layout.testdownload);
         pb=findViewById(R.id.progressBar);
+        tv=findViewById(R.id.pbr);
         DownloadTask=new DownloadSupport(this,"https://files.catbox.moe/6xyrv6.%E5%B8%B8%E7%94%A8%E5%BA%94%E7%94%A87z","/sdcard/testdownload/test2.7z");
         DownloadTask.setDownloadListener(this);
     }
@@ -39,7 +43,14 @@ public class TestDownload extends BaseActivity implements DownloadSupport.Downlo
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            ShortToastFactorySupport.makeText(msgs).show();
+            switch (msg.what) {
+                case 100:
+                    tv.setText(DownloadSupport.div(pr,ml,4)*100+"%");
+                    break;
+                default:
+                    ShortToastFactorySupport.makeText(msgs).show();
+                    break;
+            }
         }
     }
     public void startdownload(View view){
@@ -54,8 +65,8 @@ public class TestDownload extends BaseActivity implements DownloadSupport.Downlo
     public void onReceiveFileLength(long fileLength) {
         pb.setMax((int) fileLength);
         new Handers().sendEmptyMessage(200);
+        ml=fileLength;
         msgs=fileLength+"";
-        SystemServiceSupport.CopytoSystem(fileLength+"");
     }
 
     @Override
@@ -66,6 +77,8 @@ public class TestDownload extends BaseActivity implements DownloadSupport.Downlo
     @Override
     public void onDownload(long process) {
         pb.setProgress((int) process);
+        pr=process;
+        new Handers().sendEmptyMessage(100);
     }
 
     @Override
