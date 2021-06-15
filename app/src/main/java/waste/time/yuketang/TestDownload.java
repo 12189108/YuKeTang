@@ -29,7 +29,7 @@ public class TestDownload extends BaseActivity implements DownloadSupport.Downlo
         setContentView(R.layout.testdownload);
         pb=findViewById(R.id.progressBar);
         tv=findViewById(R.id.pbr);
-        DownloadTask=new DownloadSupport(this,"https://files.catbox.moe/6xyrv6.%E5%B8%B8%E7%94%A8%E5%BA%94%E7%94%A87z","/sdcard/testdownload/test2.7z");
+        DownloadTask=new DownloadSupport(this,"http://192.168.137.1/cn_windows_10_business_editions_version_21h1_x64_dvd_57455ea1_2.iso","/sdcard/testdownload/test3.iso");
         DownloadTask.setDownloadListener(this);
     }
 

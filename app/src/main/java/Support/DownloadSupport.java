@@ -5,11 +5,9 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
@@ -27,7 +25,6 @@ public class DownloadSupport
 	private String targetpath;
 	private Context mContext;
 	private long mfilelength;
-	private boolean[] ThreadCompleteState;
 	private boolean init=false,stop=false;
 	private File targetdata;
 	private long[] startPosition,endPosition,existThreadId;
@@ -68,7 +65,7 @@ public class DownloadSupport
 		try {
 			startPosition=new long[ThreadNum];
 			endPosition=new long[ThreadNum];
-			ThreadCompleteState=new boolean[ThreadNum];
+			endPosition=new long[ThreadNum];
 			File content=new File(targetpath);
 			if(!content.getParentFile().exists())content.getParentFile().mkdirs();
 			if(!content.exists())content.createNewFile();
