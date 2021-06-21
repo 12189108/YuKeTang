@@ -47,6 +47,11 @@ public class DownloadSupport
 	public void initTask(){
 		new Config().start();
 	}
+	public void cancle_download(boolean remove_downloaded_file){
+		stop=true;
+		removeData();
+		if(remove_downloaded_file)new File(targetpath).delete();
+	}
 	private void startDownload(){
 		if(mDownloadListener!=null)new ProcessLintener().start();
 		stop=false;
