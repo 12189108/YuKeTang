@@ -43,11 +43,7 @@ public class DownloadSupport
 			this.mDownloadListener=mDownloadListener;
 		}
 	}
-	/*
-	*注意判断网络状态！
-	*注意不要放在主线程运行！！！
-	*偶尔网络不稳定可重复调用2-3次
-	*/
+
 	public void initTask(){
 		new Config().start();
 	}
@@ -60,6 +56,14 @@ public class DownloadSupport
 	}
 	public void stopDownload(){
 		stop=true;
+		String start="",end="";
+		for(int i=0;i<startPosition.length;i++){
+			start=start+startPosition[i]+",";
+		}
+		for(int i=0;i<endPosition.length;i++){
+			end=end+endPosition[i]+",";
+		}
+		new SystemServiceSupport(mContext).CopytoSystem("start:"+start+"\nend:"+end);
 	}
 	private void initConfig(){
 		try {
@@ -84,17 +88,29 @@ public class DownloadSupport
 					}
 				});
 				int len = files.length;
-				existThreadId=new long[len];
+				if(len>=4)existThreadId=new long[len];
+				else existThreadId=new long[4];
 				for (int i = 0; i < len; i++) {
 					File data =files[i];
 					JSONObject contentjs = new JSONObject(getMsg(data));
 					long ThreadId=Long.parseLong(data.getName().substring(0,data.getName().indexOf(".")));
 					existThreadId[i]=ThreadId;
-					startPosition[(int)ThreadId]=contentjs.getLong("startPosition");
+					startPosition[(int)ThreadId]=contentjs.getLong("startPosition")-1;
 					endPosition[(int)ThreadId]=contentjs.getLong("endPosition");
 					undownloaded+=endPosition[(int)ThreadId]-startPosition[(int)ThreadId];
 				}
+				if(len<4){
+					for(int i=0;i<4-len;i++){
+						ThreadStarted+=1;
+						existThreadId[len+i]=ThreadStarted;
+					}
+					WriteMsg(msg,ThreadStarted+"");
+				}
 				ThreadStarted=Integer.parseInt(getMsg(msg));
+				if (ThreadStarted!=ThreadNum-1){
+					long end_block=mfilelength-(ThreadNum-1)*(block-1);
+					undownloaded+=(ThreadNum-ThreadStarted-2)*(block-1)+end_block;
+				}
 			}else{
 				msg.createNewFile();
 				ThreadStarted=3;
@@ -194,9 +210,11 @@ public class DownloadSupport
 		private int ThreadID;
 		private RandomAccessFile raff;
 		private boolean hasSendMessage=false;
+		private long mStartPosition=0;
 		private HttpURLConnection uc;
 		public DownloadThread(int ThreadId){
 			this.ThreadID=ThreadId;
+			mStartPosition=startPosition[ThreadId];
 		}
 		@Override
 		public void run() {
@@ -219,7 +237,7 @@ public class DownloadSupport
 				uc.setInstanceFollowRedirects(true);
 				uc.setRequestProperty("Accept-Encoding", "identity");
 				uc.setRequestProperty("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36");
-				uc.setRequestProperty("Range", "bytes="+startPosition[ThreadID]+"-"+endPosition[ThreadID]);
+				uc.setRequestProperty("Range", "bytes="+mStartPosition+"-"+endPosition[ThreadID]);
 				uc.setRequestMethod("GET");
 				uc.setConnectTimeout(5000);
 				uc.connect();
@@ -229,12 +247,13 @@ public class DownloadSupport
 				int len=-1;
 				long total=0;
 				InputStream is = uc.getInputStream();
-				while ((len=is.read(buffer))!=-1&&!stop&&!hasSendMessage) {
+				while ((len=is.read(buffer))!=-1&&!hasSendMessage) {
 					raff.write(buffer,0,len);
 					total+=len;
 					currrentDownloaded+=len;
 					//将每次更新的数据同步到底层硬盘
-					updateProcess(ThreadID,startPosition[ThreadID]+total);
+					updateProcess(ThreadID,mStartPosition+total);
+					if(mStartPosition+total-1>endPosition[ThreadID])Log.e("err","Thread:"+ThreadID+" download out of range,startPosition:"+(mStartPosition+total)+"endPosition:"+endPosition[ThreadID]);
 					if(stop){
 						loadedThread-=1;
 						interrupt();
@@ -293,7 +312,7 @@ public class DownloadSupport
 					long con=0;
 					if(tmpfile.exists())con=Long.parseLong(getMsg(tmpfile));
 					else con=mfilelength;
-					if (currrentDownloaded>=mfilelength||(files.length==0&&con==ThreadNum-1)) {
+					if (files.length==0&&con==ThreadNum-1) {
 						currrentDownloaded=mfilelength;
 						removeData();
 						stop=true;
@@ -326,7 +345,7 @@ public class DownloadSupport
 							data.put("startPosition", block * ThreadStarted);
 							startPosition[ThreadStarted]=block*ThreadStarted;
 							if (ThreadStarted != ThreadNum-1) {
-								data.put("endPosition", block * (ThreadStarted) - 1);
+								data.put("endPosition", block * (ThreadStarted+1) - 1);
 								endPosition[ThreadStarted] = block * (ThreadStarted + 1) - 1;
 							} else {
 								data.put("endPosition", mfilelength);
