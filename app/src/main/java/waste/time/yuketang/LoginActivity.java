@@ -19,7 +19,6 @@ public class LoginActivity extends BaseActivity {
         setContentView(R.layout.login);
         setTabTitle(getstring(R.string.login_title));
         cookies=findViewById(R.id.cookie);
-        ServiceSupport.startActivity(this,TestDownload.class);
         //ShortToastFactorySupport.makeText(getFilesDir().getAbsolutePath()).show();
         //ShortToastFactorySupport.makeText(System.currentTimeMillis()+"").show();
     }
