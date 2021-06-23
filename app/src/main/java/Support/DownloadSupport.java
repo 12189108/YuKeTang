@@ -53,15 +53,20 @@ public class DownloadSupport
 		removeData();
 		if(remove_downloaded_file)new File(targetpath).delete();
 	}
-	//设置最大下载线程数
+	//设置最大下载线程数,但当有下载存档时，会将之前的存档下载完后（按之前的线程最大数执行），再按此次设置的最大线程数执行
 	public void setMax_Download_ThreadNum(long MaxThreadNum)throws IllegalArgumentException{
-		if(!stop)throw new IllegalArgumentException("Download started, MaxThreadNum cannot be modified.");
+		if(!stop||init)throw new IllegalArgumentException("Download started, MaxThreadNum cannot be modified.");
 		else if(MaxThreadNum>=4)mMax_Downloading_ThreadNum=MaxThreadNum;
 		else throw new IllegalArgumentException("MaxThreadNum must be greater than 4.");
 	}
 	public void setUser_Agent(String User_Agent)throws IllegalArgumentException{
-		if(!stop)throw new IllegalArgumentException("Download started, User_Agent cannot be modified.");
+		if(!stop||init)throw new IllegalArgumentException("Download started, User_Agent cannot be modified.");
 		else mUser_Agent=User_Agent;
+	}
+	//单线程下载模式
+	public void setSingleThreadMode()throws IllegalAccessException{
+		if(!stop||init)throw new IllegalAccessException("Download started,Single Thread Mode cannot be set.");
+		else mMax_Downloading_ThreadNum=1;
 	}
 	public boolean isDownloadStarted(){
 		return stop;
@@ -75,6 +80,7 @@ public class DownloadSupport
 	}
 	public void stopDownload(){
 		stop=true;
+		init=false;
 	}
 	private void initConfig(){
 		try {
@@ -210,9 +216,11 @@ public class DownloadSupport
 				if(mDownloadListener!=null)mDownloadListener.onReceiveFileLength(mfilelength);
 				uc.disconnect();
 				if((int)(mfilelength/(1024*1024))>mMax_Downloading_ThreadNum)ThreadNum= (int) (mfilelength/(1024*1024))+1;
+				init=true;
 				block=(long)mfilelength/ThreadNum;
 				initConfig();
 			}catch (Throwable e){
+				init=false;
 				if(mDownloadListener!=null)mDownloadListener.onInitFailed(e);
 			}
 		}

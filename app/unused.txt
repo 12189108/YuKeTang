@@ -2,7 +2,6 @@ Support.PlusLoaderSupport
 waste.time.yuketang.R$id
 Support.GetSupport
 Support.SmsSupport$a
-Support.DownloadsSupport$Handlers
 Support.ImageCompressorSupport$ImageSupport
 Support.SystemServiceSupport:
     public static final boolean isnull(android.widget.TextView)
@@ -63,7 +62,6 @@ Support.SharedPreferencesSupport:
     public android.content.SharedPreferences getSharedPreferences(java.lang.String)
 waste.time.yuketang.R$string
 waste.time.yuketang.R$style
-Support.DownloadsSupport
 Support.HightToastSupport
 Support.AnimSupport:
     public void <init>()
