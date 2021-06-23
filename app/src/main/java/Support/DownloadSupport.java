@@ -1,15 +1,12 @@
 package Support;
 import android.content.Context;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,22 +19,26 @@ import java.net.URL;
 public class DownloadSupport
 {
 	private String downloadurl;
-	private String targetpath;
+	private String mUser_Agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36",targetpath;
 	private Context mContext;
 	private long mfilelength;
-	private boolean init=false,stop=false;
+	private boolean init=false,stop=true;
 	private File targetdata;
 	private long[] startPosition,endPosition,existThreadId;
 	private DownloadListener mDownloadListener;
 	private int ThreadNum=4,ThreadStarted=-1;
 	private int loadedThread=0;
-	private long currrentDownloaded=0,block;
+	//最大同时下载线程数
+	private long mMax_Downloading_ThreadNum=4;
+	private long currrentDownloaded=0,block=0;
 	private RandomAccessFile raf;
 	public DownloadSupport(Context mContext, String downurl, String targetpath){
 		this.downloadurl=downurl;
 		this.targetpath=targetpath;
 		this.mContext=mContext;
 	}
+
+
 	public void setDownloadListener(DownloadListener mDownloadListener){
 		if(mDownloadListener!=null){
 			this.mDownloadListener=mDownloadListener;
@@ -52,23 +53,28 @@ public class DownloadSupport
 		removeData();
 		if(remove_downloaded_file)new File(targetpath).delete();
 	}
+	//设置最大下载线程数
+	public void setMax_Download_ThreadNum(long MaxThreadNum)throws IllegalArgumentException{
+		if(!stop)throw new IllegalArgumentException("Download started, MaxThreadNum cannot be modified.");
+		else if(MaxThreadNum>=4)mMax_Downloading_ThreadNum=MaxThreadNum;
+		else throw new IllegalArgumentException("MaxThreadNum must be greater than 4.");
+	}
+	public void setUser_Agent(String User_Agent)throws IllegalArgumentException{
+		if(!stop)throw new IllegalArgumentException("Download started, User_Agent cannot be modified.");
+		else mUser_Agent=User_Agent;
+	}
+	public boolean isDownloadStarted(){
+		return stop;
+	}
 	private void startDownload(){
 		if(mDownloadListener!=null)new ProcessLintener().start();
 		stop=false;
-		for(int i=0;i<existThreadId.length;i++){
-			new DownloadThread((int)existThreadId[i]).start();
+		for (long l : existThreadId) {
+			new DownloadThread((int) l).start();
 		}
 	}
 	public void stopDownload(){
 		stop=true;
-		String start="",end="";
-		for(int i=0;i<startPosition.length;i++){
-			start=start+startPosition[i]+",";
-		}
-		for(int i=0;i<endPosition.length;i++){
-			end=end+endPosition[i]+",";
-		}
-		new SystemServiceSupport(mContext).CopytoSystem("start:"+start+"\nend:"+end);
 	}
 	private void initConfig(){
 		try {
@@ -93,8 +99,8 @@ public class DownloadSupport
 					}
 				});
 				int len = files.length;
-				if(len>=4)existThreadId=new long[len];
-				else existThreadId=new long[4];
+				if(len>=mMax_Downloading_ThreadNum)existThreadId=new long[len];
+				else existThreadId=new long[(int)mMax_Downloading_ThreadNum];
 				for (int i = 0; i < len; i++) {
 					File data =files[i];
 					JSONObject contentjs = new JSONObject(getMsg(data));
@@ -105,7 +111,7 @@ public class DownloadSupport
 					undownloaded+=endPosition[(int)ThreadId]-startPosition[(int)ThreadId];
 				}
 				if(len<4){
-					for(int i=0;i<4-len;i++){
+					for(int i=0;i<mMax_Downloading_ThreadNum-len;i++){
 						ThreadStarted+=1;
 						existThreadId[len+i]=ThreadStarted;
 					}
@@ -194,7 +200,7 @@ public class DownloadSupport
 				uc.setUseCaches(false);
 				uc.setInstanceFollowRedirects(true);
 				uc.setRequestProperty("Accept-Encoding", "identity");
-				uc.setRequestProperty("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36");
+				uc.setRequestProperty("User-Agent",mUser_Agent);
 				uc.setRequestMethod("GET");
 				uc.connect();
 				new SystemServiceSupport(mContext).CopytoSystem(uc.getResponseCode()+"");
@@ -203,7 +209,7 @@ public class DownloadSupport
 				mfilelength =Long.parseLong(uc.getHeaderField("Content-Length"));
 				if(mDownloadListener!=null)mDownloadListener.onReceiveFileLength(mfilelength);
 				uc.disconnect();
-				if((int)(mfilelength/(1024*1024))>4)ThreadNum= (int) (mfilelength/(1024*1024))+1;
+				if((int)(mfilelength/(1024*1024))>mMax_Downloading_ThreadNum)ThreadNum= (int) (mfilelength/(1024*1024))+1;
 				block=(long)mfilelength/ThreadNum;
 				initConfig();
 			}catch (Throwable e){
@@ -241,7 +247,7 @@ public class DownloadSupport
 				uc.setUseCaches(false);
 				uc.setInstanceFollowRedirects(true);
 				uc.setRequestProperty("Accept-Encoding", "identity");
-				uc.setRequestProperty("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36");
+				uc.setRequestProperty("User-Agent",mUser_Agent);
 				uc.setRequestProperty("Range", "bytes="+mStartPosition+"-"+endPosition[ThreadID]);
 				uc.setRequestMethod("GET");
 				uc.setConnectTimeout(5000);
@@ -341,7 +347,7 @@ public class DownloadSupport
 			super.handleMessage(msg);
 			switch (msg.what){
 				case 200:
-					if(!stop&&loadedThread<=4&&(ThreadStarted+1)<ThreadNum){
+					if(!stop&&loadedThread<=mMax_Downloading_ThreadNum&&(ThreadStarted+1)<ThreadNum){
 						loadedThread+=1;
 						ThreadStarted+=1;
 						WriteMsg(new File(targetdata.getAbsolutePath()+"/init.data"),ThreadStarted+"");
