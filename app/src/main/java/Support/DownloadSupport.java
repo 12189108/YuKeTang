@@ -88,13 +88,18 @@ public class DownloadSupport
 			endPosition=new long[ThreadNum];
 			endPosition=new long[ThreadNum];
 			File content=new File(targetpath);
+			File msg=new File(targetdata.getAbsolutePath()+"/init.data");
+			if(msg.exists()&&!content.exists()){
+				removeData();
+				initConfig();
+				return;
+			}
 			if(!content.getParentFile().exists())content.getParentFile().mkdirs();
 			if(!content.exists())content.createNewFile();
 			File datadir=mContext.getFilesDir();
 			if(!datadir.exists())datadir.mkdirs();
 			targetdata = new File(datadir.getAbsolutePath() + "/" + content.getName());
 			if(!targetdata.exists())targetdata.mkdir();
-			File msg=new File(targetdata.getAbsolutePath()+"/init.data");
 			long undownloaded=0;
 			if(msg.exists()) {
 				File[] files = targetdata.listFiles(new FilenameFilter() {
