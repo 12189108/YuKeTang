@@ -11,7 +11,7 @@
 		android:gravity="center|left"
 		android:orientation="horizontal"
 		android:id="@+id/tabLinearLayout0"
-		android:background="@drawable/tab"
+		android:background="@color/bg"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content">
 
