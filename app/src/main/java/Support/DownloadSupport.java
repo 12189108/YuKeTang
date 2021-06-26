@@ -220,9 +220,16 @@ public class DownloadSupport
 				mfilelength =Long.parseLong(uc.getHeaderField("Content-Length"));
 				if(mDownloadListener!=null)mDownloadListener.onReceiveFileLength(mfilelength);
 				uc.disconnect();
-				if((int)(mfilelength/(1024*1024))>mMax_Downloading_ThreadNum)ThreadNum= (int) (mfilelength/(1024*1024))+1;
-				init=true;
-				block=(long)mfilelength/ThreadNum;
+				if(mMax_Downloading_ThreadNum!=1) {
+					if ((int) (mfilelength / (1024 * 1024)) > mMax_Downloading_ThreadNum)
+						ThreadNum = (int) (mfilelength / (1024 * 1024)) + 1;
+					init = true;
+					block = (long) mfilelength / ThreadNum;
+				}else{
+					ThreadNum=1;
+					block=mfilelength;
+					init=true;
+				}
 				initConfig();
 			}catch (Throwable e){
 				init=false;
