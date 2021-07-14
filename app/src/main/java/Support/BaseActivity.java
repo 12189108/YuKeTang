@@ -75,6 +75,13 @@ public class BaseActivity extends Activity
 		this.Context=context;
 		initfile();
 	}
+	public void setBarColor(int color){
+		if(Context!=null) LinearLayout0.setBackgroundColor(color);
+		if(SystemServiceSupport.getSystemVersion()>=5){
+			getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE);
+			getWindow().setStatusBarColor(color);
+		}
+	}
 	public View setContentView(int layoutResID,int w,int h)
 	{
 		View V=LayoutInflater.from(this).inflate(layoutResID, null);
@@ -256,23 +263,7 @@ public class BaseActivity extends Activity
 	public void requestPermissions(String[] Permissions){
 		requestPermissions(Permissions,1);
 	}
-	/*public void OutIds(){
-		try{
-		JSONObject js=new JSONObject();
-		js.put("R.layout.dialog",R.layout.dialog);
-		js.put("R.layout.dialog_edit",R.layout.dialog_edit);
-		js.put("R.layout.dialog_list",R.layout.dialog_list);
-		js.put("R.layout.dialog_list_adper",R.layout.dialog_list_adper);
-		js.put("R.layout.dialog_list_drawable",R.layout.dialog_list_drawable);
-		js.put("R.layout.dialog_message",R.layout.dialog_message);
-		js.put("R.layout.dialog_progress",R.layout.dialog_progress);
-		js.put("R.layout.tab",R.layout.tab);
-		js.put("R.layout.to_top",R.layout.to_top);
-		js.put("R.layout.toast",R.layout.toast);
-		js.put("R.drawable.back",R.drawable.back);
-		js.put("R.drawable.bn_back",R.drawable.bn_back);
-		}catch(Throwable t){}
-	}*/
+
 	public static interface onMenuClickListener{
 		public void onMenuClickListener(int menu);
 	}
