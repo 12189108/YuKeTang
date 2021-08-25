@@ -260,7 +260,7 @@ public class SystemServiceSupport extends ClassSupport
 		case 27:return 8.1;
 		case 28:return 9;
 		case 29:return 10;
-		default:return 0;
+		default:return 30;
 		}
 	}
 	}

@@ -527,7 +527,7 @@ public class IOSupport
 		if(f.isFile())f.delete();
 		else{
 			File[] fs=f.listFiles();
-			for (int i = 0; i < fs.length; i++) {
+			if(fs!=null)for (int i = 0; i < fs.length; i++) {
 				if (fs[i].isFile()) fs[i].delete();
 				else deleteDirs(fs[i]);
 			}

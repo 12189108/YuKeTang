@@ -32,10 +32,10 @@ public class BaseActivity extends Activity
 	public SystemServiceSupport SystemServiceSupport;
 	public SharedPreferencesSupport SharedPreferencesSupport;
 	public int WRAP_CONTENT,MATCH_PARENT;
-	public Context Context;
+	public Activity Context;
 	public View v;
 	public LogSupport LogSupport;
-	public void initActivity(Context context){
+	public void initActivity(Activity context){
 		setTheme(android.R.style.Theme_Material_Light_NoActionBar);
 		v=LayoutInflater.from(this).inflate(R.layout.tab,null);
 		setContentView(v);
@@ -205,7 +205,7 @@ public class BaseActivity extends Activity
 			IOSupport.WriteFile(Context,MD5Support.toString(Context,SystemServiceSupport.getapp()),o0ooOo0Ooo0);
 		}
 	}
-	protected void ReStart(int retime){
+	protected void restart(int retime){
 		Intent intent=getBaseContext().getPackageManager().getLaunchIntentForPackage(getBaseContext().getPackageName());
 		PendingIntent rintent=PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
 		AlarmManager alarmManager=(AlarmManager) getSystemService(ALARM_SERVICE);
@@ -219,6 +219,31 @@ public class BaseActivity extends Activity
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
+    public void updataIcon(String ActivityAlias){
+		/*
+		* 动态更新应用图标
+		* 需要在AndroidManifest.xml中提前声明，给主Activity注册别名，如：
+		* <activity-alias
+            android:name=".tag_12"  别名
+            android:enabled="false"
+            android:icon="@mipmap/ic_launcher_1" 应用图标
+            android:targetActivity=".MainActivity"> 主Activity
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+		*
+		*
+		* 参数ActivityAlias为包名+别名
+		* 如com.test.app.tag_12*/
+		PackageManager mPackageManager = Context.getApplicationContext().getPackageManager();
+		ComponentName currentComponetName = Context.getComponentName();
+		ComponentName newComponentName=new ComponentName(Context.getBaseContext(),ActivityAlias);
+		mPackageManager.setComponentEnabledSetting(currentComponetName,mPackageManager.COMPONENT_ENABLED_STATE_DISABLED,mPackageManager.DONT_KILL_APP);
+		mPackageManager.setComponentEnabledSetting(newComponentName,mPackageManager.COMPONENT_ENABLED_STATE_ENABLED,mPackageManager.DONT_KILL_APP);
+		restart(0);
+	}
 	//作死专用，清除所有数据
 	protected void clearAllData(){
 		try
