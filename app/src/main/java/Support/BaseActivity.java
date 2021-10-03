@@ -213,11 +213,14 @@ public class BaseActivity extends Activity
 		System.exit(0);
 	}
 	public void installApk(File file) {
-        Intent intent = new Intent("android.intent.action.VIEW");
-        intent.addCategory("android.intent.category.DEFAULT");
-        intent.setDataAndType(Uri.fromFile(file),"application/vnd.android.package-archive");
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+		if(SystemServiceSupport.getSystemVersion()<7) {
+			Intent intent = new Intent("android.intent.action.VIEW");
+			intent.addCategory("android.intent.category.DEFAULT");
+			intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			startActivity(intent);
+		}
+		//else
     }
     public void updataIcon(String ActivityAlias){
 		/*

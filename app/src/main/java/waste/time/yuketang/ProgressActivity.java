@@ -141,7 +141,7 @@ public class ProgressActivity extends BaseActivity {
         List<Course_data> list=new ArrayList<>();
         for(int i=0;i<course_datas.length();i++){
            JSONArray tmp=course_datas.getJSONObject(i).getJSONArray("section_leaf_list");
-           for(int n=1;n<tmp.length();n++){
+           for(int n=0,len=tmp.length();n<len;n++){
                JSONObject tmp2=tmp.getJSONObject(n);
                if(tmp2.has("leaf_list")){
                    JSONArray tmp3=tmp2.getJSONArray("leaf_list");

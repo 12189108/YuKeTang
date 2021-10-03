@@ -16,13 +16,19 @@ android {
             keyAlias 'killedevery'
             keyPassword '12189108'
         }
+        lintOptions {
+            checkReleaseBuilds false
+            // Or, if you prefer, you can continue to check for errors in release builds,
+            // but continue the build even when errors are found:
+            abortOnError false
+        }
     }
     compileSdkVersion 28
     buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "waste.time.yuketang"
-        minSdkVersion 14
+        minSdkVersion 16
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -44,7 +50,11 @@ android {
         sourceCompatibility 1.7
         targetCompatibility "1.7"
     }
+    dependencies {
+        implementation 'com.squareup.okhttp3:okhttp:3.8.1'
+    }
 }
+
 
 
 

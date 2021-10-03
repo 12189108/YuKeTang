@@ -1,20 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:gravity="top|center">
 
-    <Support.EditTexts
-        android:hint="@string/cookie"
-        android:layout_marginLeft="5dp"
-        android:id="@+id/cookie"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <Support.Buttons
-        android:layout_width="match_parent"
-        android:layout_height="36dp"
-        android:text="@string/save"
-        android:onClick="save"
-        android:textColor="@color/white"
-        android:background="@drawable/bn_copy"
-        android:layout_margin="5dp"/>
+	<RelativeLayout
+		android:layout_marginTop="25dp"
+		android:layout_width="250dp"
+		android:layout_marginBottom="25dp"
+		android:layout_height="250dp"
+		android:gravity="center">
+
+		<ImageView
+			android:layout_width="250dp"
+			android:layout_height="250dp"
+			android:id="@+id/qrcode"
+			android:visibility="gone"/>
+
+		<LinearLayout
+			android:orientation="vertical"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:id="@+id/requesting"
+			android:gravity="center"
+			android:background="#37747474">
+
+			<TextView
+                android:id="@+id/tip"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="获取中…"/>
+
+		</LinearLayout>
+
+	</RelativeLayout>
+
+	<Support.Buttons
+		android:layout_width="match_parent"
+		android:layout_height="36dp"
+		android:text="@string/save"
+		android:onClick="save"
+		android:textColor="@color/white"
+		android:background="@drawable/bn_copy"
+		android:layout_margin="5dp"/>
+
 </LinearLayout>
+
