@@ -23,13 +23,13 @@ android {
             abortOnError false
         }
     }
-    compileSdkVersion 28
+    compileSdk 29
     buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "waste.time.yuketang"
         minSdkVersion 16
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
 
@@ -51,7 +51,7 @@ android {
         targetCompatibility "1.7"
     }
     dependencies {
-        implementation 'com.squareup.okhttp3:okhttp:3.8.1'
+        implementation 'com.squareup.okhttp3:okhttp:3.10.0'
     }
 }
 
