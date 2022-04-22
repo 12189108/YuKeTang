@@ -15,13 +15,13 @@ public class LogSupport
 		paths="sdcard/log/"+new SystemServiceSupport(c).getPackageName()+"/";
 		prepareFileDir();
 		}
-	public void writelog(String log,String path){
-		if(new File(paths+path+".logdat").exists()){
-			String s=new IOSupport(c).Read(paths+path+".logdat")+"\n";
-			new IOSupport(c).write(TimeSupport.get_ALLTIME()+"\n"+log+"\n"+s,paths+path+".logdat");
+	public void writelog(String logcontent,String logname){
+		if(new File(paths+logname+".logdat").exists()){
+			String s=new IOSupport(c).Read(paths+logname+".logdat")+"\n";
+			new IOSupport(c).write(TimeSupport.get_ALLTIME()+"\n"+logcontent+"\n"+s,paths+logname+".logdat");
 		}
 		else{
-			new IOSupport(c).write(TimeSupport.get_ALLTIME() + "\n" + log, paths + path + ".logdat");
+			new IOSupport(c).write(TimeSupport.get_ALLTIME() + "\n" + logcontent, paths + logname + ".logdat");
 		}
 	}
 	private String info(){

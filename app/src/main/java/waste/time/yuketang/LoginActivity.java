@@ -1,7 +1,6 @@
 package waste.time.yuketang;
 
 import Support.BaseActivity;
-import Support.EditTexts;
 import Support.*;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -14,19 +13,15 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.SecureRandom;
+import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.List;
@@ -35,7 +30,6 @@ import java.util.concurrent.TimeUnit;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
-import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
@@ -46,6 +40,8 @@ public class LoginActivity extends BaseActivity {
     private String Cookies="";
     private int get_msgtime;
     private String qrcode="https://api.qrserver.com/v1/create-qr-code/?size=250%C3%97250&data=";
+    private SSLContext ssl;
+
     //private String mesg="DqdkjZZMwuUa1tuUNVJfbaiZqXapIoGtNpHmp9rXSoslTflqMAeTRW7vVxUN+kH4wnNLX5B56DBAiDoE/7n85a160cRRKqoWb6vWry7T8mo=";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,22 +159,30 @@ public class LoginActivity extends BaseActivity {
           datas.put("UserID",returned_info.getInt("UserID"));
           datas.put("host_name","bksycsu.yuketang.cn");
           datas.put("no_loading",true);
-          conn.AttachCookie(Cookies);
+          conn.AttachCookie(Cookies.replace("Secure",""));
           conn.POSTData(datas.toString());
           List<String> cookies=conn.getHeadFields().get("Set-Cookie");
           HttpSupport connect = new HttpSupport().init("https://bksycsu.yuketang.cn/edu_admin/check_user_session/?term=latest&uv_id=" + ids[1]).AttachUser_Agent(getstring(R.string.user_agent));
-          String tmpcookie =Cookies;
+          String tmpcookie ="";
           for(String i:cookies){
-            tmpcookie+=i.replace("Path=/","");
+            if(i.contains("sessionid")||i.contains("csrftoken")) {
+                String tag = i.replace("Path=/", "").replace("; ;", "");
+                tmpcookie+=tag.substring(0,tag.indexOf(";")+1);
+
+            }
           }
           connect.AttachCookie(tmpcookie);
           connect.getHtml();
           List<String> last_cookie=connect.getHeadFields().get("Set-Cookie");
           for(String i:last_cookie){
-              Cookies+=i.replace("Path=/","");
+              if(i.contains("sessionid")||i.contains("csrftoken")) {
+                  String tag = i.replace("Path=/", "").replace("; ;", "");
+                  Cookies+=tag.substring(0,tag.indexOf(";")+1);
+
+              }
           }
           Intent i=new Intent(this,ListActivity.class);
-          i.putExtra("cookie",Cookies);
+          i.putExtra("cookie",Cookies.replace("Secure",""));
           startActivity(i);
       }
       else SystemServiceSupport.CopytoSystem(ids[1]);

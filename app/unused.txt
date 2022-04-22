@@ -355,7 +355,6 @@ okhttp3.CacheControl$Builder:
     public okhttp3.CacheControl$Builder noStore()
     public okhttp3.CacheControl$Builder noTransform()
 okhttp3.CacheControl:
-    public boolean immutable()
     public boolean noTransform()
     public int sMaxAgeSeconds()
 okhttp3.Call$Factory
@@ -378,6 +377,7 @@ okhttp3.CipherSuite:
 okhttp3.Connection:
     public abstract okhttp3.Handshake handshake()
     public abstract okhttp3.Protocol protocol()
+    public abstract okhttp3.Route route()
     public abstract java.net.Socket socket()
 okhttp3.ConnectionPool:
     public synchronized int connectionCount()
@@ -412,23 +412,6 @@ okhttp3.Dispatcher:
     public synchronized void setIdleCallback(java.lang.Runnable)
     public synchronized void setMaxRequests(int)
     public synchronized void setMaxRequestsPerHost(int)
-okhttp3.EventListener:
-    public void connectEnd(okhttp3.Call,java.net.InetAddress,int,java.lang.String,java.lang.Throwable)
-    public void connectStart(okhttp3.Call,java.net.InetAddress,int)
-    public void dnsEnd(okhttp3.Call,java.lang.String,java.util.List,java.lang.Throwable)
-    public void dnsStart(okhttp3.Call,java.lang.String)
-    public void fetchEnd(okhttp3.Call,java.lang.Throwable)
-    public void fetchStart(okhttp3.Call)
-    public void requestBodyEnd(okhttp3.Call,java.lang.Throwable)
-    public void requestBodyStart(okhttp3.Call)
-    public void requestHeadersEnd(okhttp3.Call,java.lang.Throwable)
-    public void requestHeadersStart(okhttp3.Call)
-    public void responseBodyEnd(okhttp3.Call,java.lang.Throwable)
-    public void responseBodyStart(okhttp3.Call)
-    public void responseHeadersEnd(okhttp3.Call,java.lang.Throwable)
-    public void responseHeadersStart(okhttp3.Call)
-    public void secureConnectEnd(okhttp3.Call,okhttp3.Handshake,java.lang.Throwable)
-    public void secureConnectStart(okhttp3.Call)
 okhttp3.FormBody$Builder
 okhttp3.FormBody
 okhttp3.Handshake:
@@ -442,6 +425,7 @@ okhttp3.Headers$Builder:
     public java.lang.String get(java.lang.String)
 okhttp3.Headers:
     private void <init>(java.lang.String[])
+    public long byteCount()
     public java.util.Date getDate(java.lang.String)
     public java.util.Set names()
     public static okhttp3.Headers of(java.util.Map)
@@ -479,8 +463,10 @@ okhttp3.HttpUrl:
     static final java.lang.String PATH_SEGMENT_ENCODE_SET_URI
     static final java.lang.String QUERY_COMPONENT_ENCODE_SET
     static final java.lang.String QUERY_COMPONENT_ENCODE_SET_URI
+    static final java.lang.String QUERY_COMPONENT_REENCODE_SET
     static final java.lang.String QUERY_ENCODE_SET
     static final java.lang.String USERNAME_ENCODE_SET
+    static java.lang.String canonicalize(java.lang.String,java.lang.String,boolean,boolean,boolean,boolean,java.nio.charset.Charset)
     public java.lang.String fragment()
     public static okhttp3.HttpUrl get(java.net.URI)
     public static okhttp3.HttpUrl get(java.net.URL)
@@ -498,7 +484,11 @@ okhttp3.HttpUrl:
     public java.net.URL url()
     public java.lang.String username()
 okhttp3.Interceptor$Chain:
+    public abstract okhttp3.Call call()
     public abstract okhttp3.Connection connection()
+    public abstract okhttp3.Interceptor$Chain withConnectTimeout(int,java.util.concurrent.TimeUnit)
+    public abstract okhttp3.Interceptor$Chain withReadTimeout(int,java.util.concurrent.TimeUnit)
+    public abstract okhttp3.Interceptor$Chain withWriteTimeout(int,java.util.concurrent.TimeUnit)
 okhttp3.MediaType:
     private static final java.util.regex.Pattern PARAMETER
     private static final java.lang.String QUOTED
@@ -534,8 +524,7 @@ okhttp3.OkHttpClient$Builder:
     public okhttp3.OkHttpClient$Builder cookieJar(okhttp3.CookieJar)
     public okhttp3.OkHttpClient$Builder dispatcher(okhttp3.Dispatcher)
     public okhttp3.OkHttpClient$Builder dns(okhttp3.Dns)
-    okhttp3.OkHttpClient$Builder eventListener(okhttp3.EventListener)
-    okhttp3.OkHttpClient$Builder eventListenerFactory(okhttp3.EventListener$Factory)
+    public okhttp3.OkHttpClient$Builder eventListenerFactory(okhttp3.EventListener$Factory)
     public okhttp3.OkHttpClient$Builder followRedirects(boolean)
     public okhttp3.OkHttpClient$Builder followSslRedirects(boolean)
     public okhttp3.OkHttpClient$Builder hostnameVerifier(javax.net.ssl.HostnameVerifier)
@@ -554,7 +543,6 @@ okhttp3.OkHttpClient:
     public okhttp3.Cache cache()
     public okhttp3.Call newCall(okhttp3.Request)
 okhttp3.RealCall$AsyncCall:
-    okhttp3.RealCall get()
     okhttp3.Request request()
 okhttp3.RealCall:
     public synthetic bridge okhttp3.Call clone()
@@ -592,7 +580,6 @@ okhttp3.Response:
     public boolean isSuccessful()
     public okhttp3.Response networkResponse()
     public okhttp3.ResponseBody peekBody(long)
-    public okhttp3.Response priorResponse()
     public okhttp3.Protocol protocol()
 okhttp3.ResponseBody$1:
     public okhttp3.MediaType contentType()
@@ -623,7 +610,6 @@ okhttp3.internal.Util:
     private void <init>()
     public static java.nio.charset.Charset bomAwareCharset(okio.BufferedSource,java.nio.charset.Charset)
     public static void closeQuietly(java.net.ServerSocket)
-    public static java.lang.String toHumanReadableAscii(java.lang.String)
 okhttp3.internal.Version:
     private void <init>()
 okhttp3.internal.cache.DiskLruCache$1
@@ -639,6 +625,7 @@ okhttp3.internal.cache2.FileOperator
 okhttp3.internal.cache2.Relay$RelaySource
 okhttp3.internal.cache2.Relay
 okhttp3.internal.connection.RealConnection:
+    private static final int MAX_TUNNEL_ATTEMPTS
     private static final java.lang.String NPE_THROW_WITH_NULL
     public okhttp3.Protocol protocol()
     public static okhttp3.internal.connection.RealConnection testConnection(okhttp3.ConnectionPool,okhttp3.Route,java.net.Socket,long)
@@ -661,6 +648,10 @@ okhttp3.internal.http.HttpHeaders:
     public static boolean varyMatches(okhttp3.Response,okhttp3.Headers,okhttp3.Request)
 okhttp3.internal.http.HttpMethod:
     private void <init>()
+okhttp3.internal.http.RealInterceptorChain:
+    public okhttp3.Interceptor$Chain withConnectTimeout(int,java.util.concurrent.TimeUnit)
+    public okhttp3.Interceptor$Chain withReadTimeout(int,java.util.concurrent.TimeUnit)
+    public okhttp3.Interceptor$Chain withWriteTimeout(int,java.util.concurrent.TimeUnit)
 okhttp3.internal.http.RealResponseBody:
     public okhttp3.MediaType contentType()
 okhttp3.internal.http.RequestLine:
@@ -675,6 +666,7 @@ okhttp3.internal.http.StatusLine:
 okhttp3.internal.http1.Http1Codec$ChunkedSource:
     private static final long NO_CHUNK_YET
 okhttp3.internal.http1.Http1Codec:
+    private static final int HEADER_LIMIT
     private static final int STATE_CLOSED
     private static final int STATE_IDLE
     private static final int STATE_OPEN_REQUEST_BODY
@@ -721,11 +713,12 @@ okhttp3.internal.http2.Http2Connection$ReaderRunnable:
     public void alternateService(int,java.lang.String,okio.ByteString,java.lang.String,int,long)
 okhttp3.internal.http2.Http2Connection:
     private static final int OKHTTP_CLIENT_WINDOW_SIZE
+    synchronized void awaitPong()
     public okhttp3.Protocol getProtocol()
     public synchronized int openStreamCount()
-    public okhttp3.internal.http2.Ping ping()
     public okhttp3.internal.http2.Http2Stream pushStream(int,java.util.List,boolean)
     public void setSettings(okhttp3.internal.http2.Settings)
+    void writePingAndAwaitPong()
     void writeSynReply(int,boolean,java.util.List)
 okhttp3.internal.http2.Http2Reader$Handler:
     public abstract void alternateService(int,java.lang.String,okio.ByteString,java.lang.String,int,long)
@@ -739,9 +732,6 @@ okhttp3.internal.http2.Http2Stream:
 okhttp3.internal.http2.Http2Writer:
     public synchronized void headers(int,java.util.List)
     public synchronized void synReply(boolean,int,java.util.List)
-okhttp3.internal.http2.Ping:
-    public long roundTripTime()
-    public long roundTripTime(long,java.util.concurrent.TimeUnit)
 okhttp3.internal.http2.Settings:
     static final int COUNT
     static final int DEFAULT_INITIAL_WINDOW_SIZE
@@ -757,15 +747,18 @@ okhttp3.internal.io.FileSystem$1
 okhttp3.internal.io.FileSystem
 okhttp3.internal.platform.AndroidPlatform:
     private static final int MAX_LOG_LENGTH
+    protected javax.net.ssl.X509TrustManager trustManager(javax.net.ssl.SSLSocketFactory)
+okhttp3.internal.platform.ConscryptPlatform:
     public javax.net.ssl.X509TrustManager trustManager(javax.net.ssl.SSLSocketFactory)
 okhttp3.internal.platform.Jdk9Platform:
     public javax.net.ssl.X509TrustManager trustManager(javax.net.ssl.SSLSocketFactory)
 okhttp3.internal.platform.Platform:
     public static final int INFO
     public static final int WARN
+    public okhttp3.internal.tls.CertificateChainCleaner buildCertificateChainCleaner(javax.net.ssl.SSLSocketFactory)
     public java.lang.String getPrefix()
     static java.lang.Object readFieldOrNull(java.lang.Object,java.lang.Class,java.lang.String)
-    public javax.net.ssl.X509TrustManager trustManager(javax.net.ssl.SSLSocketFactory)
+    protected javax.net.ssl.X509TrustManager trustManager(javax.net.ssl.SSLSocketFactory)
 okhttp3.internal.publicsuffix.PublicSuffixDatabase:
     private static final byte EXCEPTION_MARKER
     public static final java.lang.String PUBLIC_SUFFIX_RESOURCE
@@ -774,6 +767,7 @@ okhttp3.internal.tls.BasicCertificateChainCleaner:
     private static final int MAX_SIGNERS
 okhttp3.internal.tls.CertificateChainCleaner:
     public static varargs okhttp3.internal.tls.CertificateChainCleaner get(java.security.cert.X509Certificate[])
+okhttp3.internal.tls.DistinguishedNameParser
 okhttp3.internal.tls.OkHostnameVerifier:
     private static final int ALT_DNS_NAME
     private static final int ALT_IPA_NAME
@@ -781,13 +775,14 @@ okhttp3.internal.ws.RealWebSocket:
     private static final long CANCEL_AFTER_CLOSE_MILLIS
     private static final long MAX_QUEUE_SIZE
     void awaitTermination(int,java.util.concurrent.TimeUnit)
-    synchronized int pingCount()
     synchronized boolean pong(okio.ByteString)
-    synchronized int pongCount()
     boolean processNextFrame()
     public synchronized long queueSize()
+    synchronized int receivedPingCount()
+    synchronized int receivedPongCount()
     public okhttp3.Request request()
     public boolean send(okio.ByteString)
+    synchronized int sentPingCount()
     void tearDown()
 okhttp3.internal.ws.WebSocketProtocol:
     static final java.lang.String ACCEPT_MAGIC
@@ -798,11 +793,9 @@ okhttp3.internal.ws.WebSocketProtocol:
     static final int B0_MASK_OPCODE
     static final int B1_FLAG_MASK
     static final int B1_MASK_LENGTH
-    static final int CLOSE_ABNORMAL_TERMINATION
     static final int CLOSE_CLIENT_GOING_AWAY
     static final long CLOSE_MESSAGE_MAX
     static final int CLOSE_NO_STATUS_CODE
-    static final int CLOSE_PROTOCOL_EXCEPTION
     static final int OPCODE_BINARY
     static final int OPCODE_CONTINUATION
     static final int OPCODE_CONTROL_CLOSE
@@ -825,6 +818,9 @@ okio.Base64:
     public static java.lang.String encodeUrl(byte[])
 okio.Buffer$1
 okio.Buffer$2
+okio.Buffer$UnsafeCursor:
+    public long expandBuffer(int)
+    public long resizeBuffer(long)
 okio.Buffer:
     static final int REPLACEMENT_CHARACTER
     public okio.Buffer copyTo(java.io.OutputStream)
@@ -847,12 +843,15 @@ okio.Buffer:
     private boolean rangeEquals(okio.Segment,int,okio.ByteString,int,int)
     public int read(byte[])
     public long readAll(okio.Sink)
+    public okio.Buffer$UnsafeCursor readAndWriteUnsafe()
     public long readDecimalLong()
     public okio.Buffer readFrom(java.io.InputStream)
     public okio.Buffer readFrom(java.io.InputStream,long)
     private void readFrom(java.io.InputStream,long,boolean)
     public long readLongLe()
     public java.lang.String readString(java.nio.charset.Charset)
+    public okio.Buffer$UnsafeCursor readUnsafe()
+    public okio.Buffer$UnsafeCursor readUnsafe(okio.Buffer$UnsafeCursor)
     public int readUtf8CodePoint()
     public java.lang.String readUtf8Line()
     public boolean request(long)
@@ -867,11 +866,11 @@ okio.Buffer:
     public synthetic bridge okio.BufferedSink writeDecimalLong(long)
     public okio.Buffer writeIntLe(int)
     public synthetic bridge okio.BufferedSink writeIntLe(int)
+    public synthetic bridge okio.BufferedSink writeLong(long)
     public okio.Buffer writeLongLe(long)
     public synthetic bridge okio.BufferedSink writeLongLe(long)
     public okio.Buffer writeShortLe(int)
     public synthetic bridge okio.BufferedSink writeShortLe(int)
-    public okio.Buffer writeString(java.lang.String,int,int,java.nio.charset.Charset)
     public okio.Buffer writeString(java.lang.String,java.nio.charset.Charset)
     public synthetic bridge okio.BufferedSink writeString(java.lang.String,int,int,java.nio.charset.Charset)
     public synthetic bridge okio.BufferedSink writeString(java.lang.String,java.nio.charset.Charset)
@@ -885,6 +884,7 @@ okio.BufferedSink:
     public abstract long writeAll(okio.Source)
     public abstract okio.BufferedSink writeDecimalLong(long)
     public abstract okio.BufferedSink writeIntLe(int)
+    public abstract okio.BufferedSink writeLong(long)
     public abstract okio.BufferedSink writeLongLe(long)
     public abstract okio.BufferedSink writeShortLe(int)
     public abstract okio.BufferedSink writeString(java.lang.String,int,int,java.nio.charset.Charset)
@@ -902,6 +902,7 @@ okio.BufferedSource:
     public abstract boolean rangeEquals(long,okio.ByteString)
     public abstract boolean rangeEquals(long,okio.ByteString,int,int)
     public abstract int read(byte[])
+    public abstract int read(byte[],int,int)
     public abstract long readAll(okio.Sink)
     public abstract byte[] readByteArray()
     public abstract okio.ByteString readByteString()
@@ -913,7 +914,6 @@ okio.BufferedSource:
     public abstract java.lang.String readUtf8(long)
     public abstract int readUtf8CodePoint()
     public abstract java.lang.String readUtf8Line()
-    public abstract java.lang.String readUtf8LineStrict(long)
     public abstract boolean request(long)
     public abstract int select(okio.Options)
 okio.ByteString:
@@ -950,9 +950,10 @@ okio.ByteString:
     public void write(java.io.OutputStream)
     private void writeObject(java.io.ObjectOutputStream)
 okio.DeflaterSink
-okio.ForwardingSink
+okio.ForwardingSink:
+    public final okio.Sink delegate()
 okio.ForwardingSource:
-    public final okio.Source delegate()
+    public long read(okio.Buffer,long)
 okio.GzipSink
 okio.GzipSource:
     private static final byte FCOMMENT
@@ -987,6 +988,7 @@ okio.RealBufferedSink:
     public long writeAll(okio.Source)
     public okio.BufferedSink writeDecimalLong(long)
     public okio.BufferedSink writeIntLe(int)
+    public okio.BufferedSink writeLong(long)
     public okio.BufferedSink writeLongLe(long)
     public okio.BufferedSink writeShortLe(int)
     public okio.BufferedSink writeString(java.lang.String,int,int,java.nio.charset.Charset)
@@ -1004,6 +1006,7 @@ okio.RealBufferedSource:
     public boolean rangeEquals(long,okio.ByteString)
     public boolean rangeEquals(long,okio.ByteString,int,int)
     public int read(byte[])
+    public int read(byte[],int,int)
     public long readAll(okio.Sink)
     public byte[] readByteArray()
     public okio.ByteString readByteString()
@@ -1046,6 +1049,8 @@ okio.package-info
 waste.time.yuketang.BuildConfig
 waste.time.yuketang.ListActivity:
     private java.lang.String class_id
+waste.time.yuketang.LoginActivity:
+    private javax.net.ssl.SSLContext ssl
 waste.time.yuketang.R$color
 waste.time.yuketang.R$drawable
 waste.time.yuketang.R$id
@@ -1064,12 +1069,12 @@ Support.AnimSupport:
     public static boolean invalidatesCache(java.lang.String)
     public static boolean redirectsToGet(java.lang.String)
     public static boolean redirectsWithBody(java.lang.String)
+    public static boolean requiresRequestBody(java.lang.String)
     public static final android.view.animation.RotateAnimation rotate(int,int,boolean,boolean)
     public java.lang.String toString()
     public static byte[] toString(android.content.Context,java.lang.String)
     private java.lang.String toString$okhttp3$MediaType()
     public static java.lang.String userAgent()
-    public static void validateCloseCode(int)
 Support.BaseActivity:
     public Support.DeviceSupport DeviceSupport
     public android.widget.GridView GridView
@@ -1112,8 +1117,6 @@ Support.HttpSupport:
     public java.net.URL url
     public java.util.Map getHeadFields()
 Support.IOHelperSupport:
-    private void $r8$constructor$Support$IOHelperSupport(android.content.Context)
-    private void $r8$constructor$Support$IOSupport(android.content.Context)
     public static byte[] RawFile2byte(android.content.Context,int)
     public static void WriteFile(android.content.Context,byte[],java.lang.String)
     public void clearCache()
@@ -1122,8 +1125,6 @@ Support.IOHelperSupport:
 Support.IOSupport
 Support.LogSupport
 Support.LongToastFactorySupport:
-    private void $r8$constructor$Support$LongToastFactorySupport(android.content.Context)
-    private void $r8$constructor$Support$ShortToastFactorySupport(android.content.Context)
     private final double gettoasty$Support$LongToastFactorySupport()
     private double gettoasty$Support$ShortToastFactorySupport()
     public Support.LongToastFactorySupport makeText(java.lang.String,int)
@@ -1160,20 +1161,13 @@ okhttp3.Authenticator$1:
 okhttp3.Authenticator:
     public abstract okhttp3.Request authenticate(okhttp3.Route,okhttp3.Response)
 okhttp3.Cache
-okhttp3.CacheControl$Builder:
-    public boolean immutable
-    public int maxAgeSeconds
-    public int minFreshSeconds
-    public boolean noStore
-    public boolean noTransform
-    public okhttp3.CacheControl build()
-    public okhttp3.CacheControl$Builder maxStale(int,java.util.concurrent.TimeUnit)
-    public okhttp3.CacheControl$Builder noCache()
-    public okhttp3.CacheControl$Builder onlyIfCached()
+okhttp3.CacheControl$Builder
 okhttp3.CacheControl:
     public static final okhttp3.CacheControl FORCE_CACHE
     public static final okhttp3.CacheControl FORCE_NETWORK
+    public void <init>(okhttp3.CacheControl$Builder)
     public final java.lang.String headerValue()
+    public boolean immutable()
     public boolean isPrivate()
     public boolean isPublic()
     public int maxAgeSeconds()
@@ -1200,7 +1194,7 @@ okhttp3.CertificatePinner:
     public java.util.List findMatchingPins(java.lang.String)
     public static okio.ByteString sha1(java.security.cert.X509Certificate)
     public static okio.ByteString sha256(java.security.cert.X509Certificate)
-    public okhttp3.CertificatePinner withCertificateChainCleaner(okhttp3.WebSocketListener)
+    public okhttp3.CertificatePinner withCertificateChainCleaner(okhttp3.internal.tls.CertificateChainCleaner)
 okhttp3.CipherSuite$1:
     public int compare(java.lang.String,java.lang.String)
 okhttp3.CipherSuite:
@@ -1238,7 +1232,9 @@ okhttp3.CipherSuite:
     public static final okhttp3.CipherSuite TLS_DH_anon_WITH_DES_CBC_SHA
     public static final okhttp3.CipherSuite TLS_DH_anon_WITH_RC4_128_MD5
     public static final okhttp3.CipherSuite TLS_ECDHE_ECDSA_WITH_3DES_EDE_CBC_SHA
+    public static final okhttp3.CipherSuite TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA
     public static final okhttp3.CipherSuite TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256
+    public static final okhttp3.CipherSuite TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA
     public static final okhttp3.CipherSuite TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384
     public static final okhttp3.CipherSuite TLS_ECDHE_ECDSA_WITH_NULL_SHA
     public static final okhttp3.CipherSuite TLS_ECDHE_ECDSA_WITH_RC4_128_SHA
@@ -1356,7 +1352,27 @@ okhttp3.EventListener$2:
 okhttp3.EventListener$Factory:
     public abstract okhttp3.EventListener create(okhttp3.Call)
 okhttp3.EventListener:
+    public void callEnd()
+    public void callFailed()
+    public void callStart()
+    public void connectEnd()
+    public void connectFailed()
+    public void connectStart()
+    public void connectionAcquired()
+    public void connectionReleased()
+    public void dnsEnd()
+    public void dnsStart()
     public static okhttp3.EventListener$Factory factory(okhttp3.EventListener)
+    public void requestBodyEnd()
+    public void requestBodyStart()
+    public void requestHeadersEnd()
+    public void requestHeadersStart()
+    public void responseBodyEnd()
+    public void responseBodyStart()
+    public void responseHeadersEnd()
+    public void responseHeadersStart()
+    public void secureConnectEnd()
+    public void secureConnectStart()
 okhttp3.Handshake:
     public okhttp3.CipherSuite cipherSuite()
     public java.util.List peerCertificates()
@@ -1368,13 +1384,18 @@ okhttp3.Headers$Builder:
 okhttp3.Headers:
     public static java.lang.String get(java.lang.String[],java.lang.String)
     public java.util.List values(java.lang.String)
-okhttp3.HttpUrl$Builder$ParseResult$r8$EnumUnboxingUtility
+okhttp3.HttpUrl$Builder$ParseResult$EnumUnboxingLocalUtility
+okhttp3.HttpUrl$Builder$ParseResult$EnumUnboxingSharedUtility:
+    public static synthetic void checkNotZero(int)
+    public static synthetic void checkNotZero(int,java.lang.String)
+    public static synthetic int compareTo(int,int)
+    public static synthetic boolean equals(int,int)
+    public static synthetic int ordinal(int)
 okhttp3.HttpUrl$Builder$ParseResult
 okhttp3.HttpUrl$Builder:
-    public static boolean decodeIpv4Suffix(java.lang.String,int,int,byte[],int)
+    public static java.lang.String canonicalizeHost(java.lang.String,int,int)
     public int effectivePort()
     public okhttp3.HttpUrl$Builder host(java.lang.String)
-    public static java.lang.String inet6AddressToAscii(byte[])
     public final boolean isDot(java.lang.String)
     public final boolean isDotDot(java.lang.String)
     public static int parsePort(java.lang.String,int,int)
@@ -1391,7 +1412,7 @@ okhttp3.HttpUrl$Builder:
     public okhttp3.HttpUrl$Builder username(java.lang.String)
 okhttp3.HttpUrl:
     public final java.util.List pathSegments
-    public static void canonicalize(okio.Buffer,java.lang.String,int,int,java.lang.String,boolean,boolean,boolean,boolean)
+    public static void canonicalize(okio.Buffer,java.lang.String,int,int,java.lang.String,boolean,boolean,boolean,boolean,java.nio.charset.Charset)
     public java.lang.String encodedFragment()
     public java.lang.String host()
     public boolean isHttps()
@@ -1405,8 +1426,11 @@ okhttp3.HttpUrl:
     public okhttp3.HttpUrl resolve(java.lang.String)
     public java.lang.String scheme()
 okhttp3.Interceptor$Chain:
+    public abstract int connectTimeoutMillis()
     public abstract okhttp3.Response proceed(okhttp3.Request)
+    public abstract int readTimeoutMillis()
     public abstract okhttp3.Request request()
+    public abstract int writeTimeoutMillis()
 okhttp3.MediaType
 okhttp3.OkHttpClient$1:
     public void addLenient(okhttp3.Headers$Builder,java.lang.String)
@@ -1422,6 +1446,7 @@ okhttp3.OkHttpClient$Builder:
     public okhttp3.Cache cache
     public okhttp3.OkHttpClient build()
     public okhttp3.OkHttpClient$Builder connectTimeout(long,java.util.concurrent.TimeUnit)
+    public okhttp3.OkHttpClient$Builder eventListener(okhttp3.EventListener)
     public okhttp3.OkHttpClient$Builder protocols(java.util.List)
     public okhttp3.OkHttpClient$Builder readTimeout(long,java.util.concurrent.TimeUnit)
     public okhttp3.OkHttpClient$Builder writeTimeout(long,java.util.concurrent.TimeUnit)
@@ -1457,14 +1482,16 @@ okhttp3.OkHttpClient:
     public final javax.net.ssl.X509TrustManager systemDefaultTrustManager()
     public int writeTimeoutMillis()
 okhttp3.RealCall$AsyncCall:
+    public okhttp3.RealCall get()
     public java.lang.String host()
 okhttp3.RealCall:
-    public final okhttp3.EventListener eventListener
+    public static synthetic okhttp3.EventListener access$000(okhttp3.RealCall)
     public void cancel()
     public final void captureCallStackTrace()
     public okhttp3.RealCall clone()
     public void enqueue(okhttp3.Callback)
     public boolean isCanceled()
+    public static okhttp3.RealCall newRealCall(okhttp3.OkHttpClient,okhttp3.Request,boolean)
     public java.lang.String redactedUrl()
     public okhttp3.internal.connection.StreamAllocation streamAllocation()
 okhttp3.Request$Builder:
@@ -1515,6 +1542,7 @@ okhttp3.Response:
     public okhttp3.Headers headers()
     public java.lang.String message()
     public okhttp3.Response$Builder newBuilder()
+    public okhttp3.Response priorResponse()
     public long receivedResponseAtMillis()
     public okhttp3.Request request()
     public long sentRequestAtMillis()
@@ -1526,16 +1554,17 @@ okhttp3.ResponseBody:
 okhttp3.Route:
     public okhttp3.Address address()
     public java.net.Proxy proxy()
-    public boolean requiresTunnel()
     public java.net.InetSocketAddress socketAddress()
 okhttp3.TlsVersion:
     public static varargs java.util.List forJavaNames(java.lang.String[])
 okhttp3.WebSocket:
     public abstract boolean send(java.lang.String)
 okhttp3.WebSocketListener:
-    private void $r8$constructor$okhttp3$WebSocketListener()
-    private void $r8$constructor$okhttp3$internal$tls$CertificateChainCleaner()
-    public static okhttp3.WebSocketListener get(javax.net.ssl.X509TrustManager)
+    public void onClosed(okhttp3.WebSocket,int,java.lang.String)
+    public void onClosing(okhttp3.WebSocket,int,java.lang.String)
+    public void onFailure(okhttp3.WebSocket,java.lang.Throwable,okhttp3.Response)
+    public void onMessage(okhttp3.WebSocket,java.lang.String)
+    public void onMessage(okhttp3.WebSocket,okio.ByteString)
 okhttp3.internal.Internal:
     public abstract void addLenient(okhttp3.Headers$Builder,java.lang.String)
     public abstract void apply(okhttp3.ConnectionSpec,javax.net.ssl.SSLSocket,boolean)
@@ -1550,6 +1579,7 @@ okhttp3.internal.Util$1:
     public int compare(java.lang.String,java.lang.String)
 okhttp3.internal.Util:
     public static final okhttp3.RequestBody EMPTY_REQUEST
+    public static final java.nio.charset.Charset ISO_8859_1
     public static final java.nio.charset.Charset UTF_16_BE
     public static final okio.ByteString UTF_16_BE_BOM
     public static final java.nio.charset.Charset UTF_16_LE
@@ -1561,7 +1591,9 @@ okhttp3.internal.Util:
     public static final okio.ByteString UTF_8_BOM
     public static java.lang.String[] concat(java.lang.String[],java.lang.String)
     public static boolean containsInvalidHostnameAsciiCodes(java.lang.String)
+    public static boolean decodeIpv4Suffix(java.lang.String,int,int,byte[],int)
     public static int indexOf(java.util.Comparator,java.lang.String[],java.lang.String)
+    public static java.lang.String inet6AddressToAscii(byte[])
     public static java.util.concurrent.ThreadFactory threadFactory(java.lang.String,boolean)
     public static boolean verifyAsIpAddress(java.lang.String)
 okhttp3.internal.Version
@@ -1578,12 +1610,12 @@ okhttp3.internal.connection.RealConnection$1:
     public final synthetic okhttp3.internal.connection.RealConnection this$0
 okhttp3.internal.connection.RealConnection:
     public void cancel()
-    public void connect(int,int,int,boolean)
     public final void connectTls(okhttp3.internal.connection.ConnectionSpecSelector)
     public final okhttp3.Request createTunnel(int,int,okhttp3.Request,okhttp3.HttpUrl)
     public final okhttp3.Request createTunnelRequest()
     public okhttp3.Handshake handshake()
     public boolean isHealthy(boolean)
+    public final boolean isValid(javax.net.ssl.SSLSession)
     public okhttp3.internal.ws.RealWebSocket$Streams newWebSocketStreams(okhttp3.internal.connection.StreamAllocation)
     public okhttp3.Route route()
     public java.net.Socket socket()
@@ -1592,13 +1624,13 @@ okhttp3.internal.connection.RouteException:
     public void addConnectException(java.io.IOException)
     public final void addSuppressedIfPossible(java.io.IOException,java.io.IOException)
     public java.io.IOException getLastConnectException()
+okhttp3.internal.connection.RouteSelector$Selection:
+    public java.util.List getAll()
+    public okhttp3.Route next()
 okhttp3.internal.connection.RouteSelector:
-    public java.net.InetSocketAddress lastInetSocketAddress
+    public final okhttp3.Call call
     public static java.lang.String getHostString(java.net.InetSocketAddress)
-    public boolean hasNext()
-    public final boolean hasNextPostponed()
-    public final java.net.InetSocketAddress nextInetSocketAddress()
-    public final okhttp3.Route nextPostponed()
+    public okhttp3.internal.connection.RouteSelector$Selection next()
     public final java.net.Proxy nextProxy()
     public final void resetNextInetSocketAddress(java.net.Proxy)
     public final void resetNextProxy(okhttp3.HttpUrl,java.net.Proxy)
@@ -1608,9 +1640,11 @@ okhttp3.internal.connection.StreamAllocation:
     public void cancel()
     public okhttp3.internal.http.HttpCodec codec()
     public boolean hasMoreRoutes()
-    public okhttp3.internal.http.HttpCodec newStream(okhttp3.OkHttpClient,boolean)
+    public okhttp3.internal.http.HttpCodec newStream(okhttp3.OkHttpClient,okhttp3.Interceptor$Chain,boolean)
     public final void release(okhttp3.internal.connection.RealConnection)
     public java.net.Socket releaseAndAcquire(okhttp3.internal.connection.RealConnection)
+    public final java.net.Socket releaseIfNoNewStreams()
+    public okhttp3.Route route()
     public final Support.ClassSupport routeDatabase()
 okhttp3.internal.http.BridgeInterceptor:
     public final java.lang.String cookieHeader(java.util.List)
@@ -1625,16 +1659,23 @@ okhttp3.internal.http.HttpHeaders:
     public static long stringToLong(java.lang.String)
 okhttp3.internal.http.HttpMethod
 okhttp3.internal.http.RealInterceptorChain:
+    public okhttp3.Call call()
+    public int connectTimeoutMillis()
     public okhttp3.Connection connection()
+    public okhttp3.EventListener eventListener()
     public okhttp3.internal.http.HttpCodec httpStream()
+    public int readTimeoutMillis()
     public okhttp3.Request request()
     public okhttp3.internal.connection.StreamAllocation streamAllocation()
+    public int writeTimeoutMillis()
+okhttp3.internal.http.RealResponseBody:
+    public final java.lang.String contentTypeString
 okhttp3.internal.http.RequestLine:
     public static java.lang.String get(okhttp3.Request,java.net.Proxy$Type)
     public static boolean includeAuthorityInRequestLine(okhttp3.Request,java.net.Proxy$Type)
 okhttp3.internal.http.RetryAndFollowUpInterceptor:
     public void cancel()
-    public final okhttp3.Request followUpRequest(okhttp3.Response)
+    public final okhttp3.Request followUpRequest(okhttp3.Response,okhttp3.Route)
     public boolean isCanceled()
     public final boolean isRecoverable(java.io.IOException,boolean)
     public void setCallStackTrace(java.lang.Object)
@@ -1644,12 +1685,26 @@ okhttp3.internal.http1.Http1Codec$AbstractSource:
     public void <init>(okhttp3.internal.http1.Http1Codec)
 okhttp3.internal.http1.Http1Codec$ChunkedSource:
     public final void readChunkSize()
+okhttp3.internal.http1.Http1Codec$FixedLengthSource:
+    public final synthetic okhttp3.internal.http1.Http1Codec this$0
+okhttp3.internal.http1.Http1Codec$UnknownLengthSource:
+    public final synthetic okhttp3.internal.http1.Http1Codec this$0
 okhttp3.internal.http1.Http1Codec:
-    public final okio.Source getTransferStream(okhttp3.Response)
     public okio.Sink newChunkedSink()
     public okio.Source newChunkedSource(okhttp3.HttpUrl)
     public okio.Sink newFixedLengthSink(long)
     public okio.Source newUnknownLengthSource()
+okhttp3.internal.http2.ErrorCode$EnumUnboxingLocalUtility:
+    public static final enum int COMPRESSION_ERROR
+    public static final enum int CONNECT_ERROR
+    public static final enum int ENHANCE_YOUR_CALM
+    public static final enum int HTTP_1_1_REQUIRED
+    public static final enum int INADEQUATE_SECURITY
+    public static void <clinit>()
+    public static int _valueOf(java.lang.String)
+    public static synthetic java.lang.String name(int)
+    public static synthetic int valueOf(java.lang.String)
+okhttp3.internal.http2.ErrorCode
 okhttp3.internal.http2.Hpack$Reader:
     public void <init>(int,int,okio.Source)
     public final void adjustDynamicTableByteCount()
@@ -1681,64 +1736,66 @@ okhttp3.internal.http2.Http2Codec:
     public static final okio.ByteString TE
     public static final okio.ByteString TRANSFER_ENCODING
     public static final okio.ByteString UPGRADE
+    public final okhttp3.OkHttpClient client
     public static java.util.List http2HeadersList(okhttp3.Request)
     public static okhttp3.Response$Builder readHttp2HeadersList(java.util.List)
+okhttp3.internal.http2.Http2Connection$3:
+    public final synthetic java.util.List val$requestHeaders
 okhttp3.internal.http2.Http2Connection$4:
+    public final synthetic boolean val$inFinished
     public final synthetic java.util.List val$requestHeaders
 okhttp3.internal.http2.Http2Connection$5:
     public final synthetic boolean val$inFinished
-    public final synthetic java.util.List val$requestHeaders
 okhttp3.internal.http2.Http2Connection$6:
-    public final synthetic boolean val$inFinished
-okhttp3.internal.http2.Http2Connection$7:
-    public final synthetic okhttp3.internal.http2.ErrorCode val$errorCode
+    public final synthetic int val$errorCode
 okhttp3.internal.http2.Http2Connection$Builder:
     public boolean client
     public okhttp3.internal.http2.PushObserver pushObserver
     public okhttp3.internal.http2.Http2Connection build()
     public okhttp3.internal.http2.Http2Connection$Builder listener(okhttp3.internal.http2.Http2Connection$Listener)
+    public okhttp3.internal.http2.Http2Connection$Builder pingIntervalMillis(int)
     public okhttp3.internal.http2.Http2Connection$Builder socket(java.net.Socket,java.lang.String,okio.BufferedSource,okio.BufferedSink)
 okhttp3.internal.http2.Http2Connection$ReaderRunnable:
     public void ackSettings()
     public final void applyAndAckSettings(okhttp3.internal.http2.Settings)
     public void data(boolean,int,okio.BufferedSource,int)
-    public void goAway(int,okhttp3.internal.http2.ErrorCode,okio.ByteString)
+    public void goAway$enumunboxing$(int,int,okio.ByteString)
     public void headers(boolean,int,int,java.util.List)
     public void ping(boolean,int,int)
     public void priority(int,int,int,boolean)
     public void pushPromise(int,int,java.util.List)
-    public void rstStream(int,okhttp3.internal.http2.ErrorCode)
+    public void rstStream$enumunboxing$(int,int)
     public void settings(boolean,okhttp3.internal.http2.Settings)
     public void windowUpdate(int,long)
 okhttp3.internal.http2.Http2Connection:
     public static final synthetic boolean $assertionsDisabled
-    public int nextPingId
-    public java.util.Map pings
+    public static synthetic java.util.concurrent.ExecutorService access$100()
+    public static synthetic java.util.concurrent.ScheduledExecutorService access$200(okhttp3.internal.http2.Http2Connection)
+    public static synthetic boolean access$302(okhttp3.internal.http2.Http2Connection,boolean)
     public void addBytesToWriteWindow(long)
+    public final void failConnection()
     public synchronized boolean isShutdown()
     public final okhttp3.internal.http2.Http2Stream newStream(int,java.util.List,boolean)
     public okhttp3.internal.http2.Http2Stream newStream(java.util.List,boolean)
     public void pushDataLater(int,okio.BufferedSource,int,boolean)
     public void pushHeadersLater(int,java.util.List,boolean)
     public void pushRequestLater(int,java.util.List)
-    public void pushResetLater(int,okhttp3.internal.http2.ErrorCode)
-    public synchronized okhttp3.internal.http2.Ping removePing(int)
+    public void pushResetLater$enumunboxing$(int,int)
     public void start()
     public void start(boolean)
-    public void writePing(boolean,int,int,okhttp3.internal.http2.Ping)
-    public void writePingLater(boolean,int,int,okhttp3.internal.http2.Ping)
-    public void writeSynReset(int,okhttp3.internal.http2.ErrorCode)
+    public void writePing(boolean,int,int)
+    public void writeSynReset$enumunboxing$(int,int)
 okhttp3.internal.http2.Http2Reader$ContinuationSource:
     public final void readContinuationHeader()
 okhttp3.internal.http2.Http2Reader$Handler:
     public abstract void ackSettings()
     public abstract void data(boolean,int,okio.BufferedSource,int)
-    public abstract void goAway(int,okhttp3.internal.http2.ErrorCode,okio.ByteString)
+    public abstract void goAway$enumunboxing$(int,int,okio.ByteString)
     public abstract void headers(boolean,int,int,java.util.List)
     public abstract void ping(boolean,int,int)
     public abstract void priority(int,int,int,boolean)
     public abstract void pushPromise(int,int,java.util.List)
-    public abstract void rstStream(int,okhttp3.internal.http2.ErrorCode)
+    public abstract void rstStream$enumunboxing$(int,int)
     public abstract void settings(boolean,okhttp3.internal.http2.Settings)
     public abstract void windowUpdate(int,long)
 okhttp3.internal.http2.Http2Reader:
@@ -1764,7 +1821,7 @@ okhttp3.internal.http2.Http2Stream:
     public okio.Timeout readTimeout()
     public void receiveData(okio.BufferedSource,int)
     public void receiveHeaders(java.util.List)
-    public synchronized void receiveRstStream(okhttp3.internal.http2.ErrorCode)
+    public synchronized void receiveRstStream$enumunboxing$(int)
     public synchronized java.util.List takeResponseHeaders()
     public okio.Timeout writeTimeout()
 okhttp3.internal.http2.Http2Writer:
@@ -1782,23 +1839,16 @@ okhttp3.internal.http2.Huffman:
     public void encode(okio.ByteString,okio.BufferedSink)
     public int encodedLength(okio.ByteString)
     public static okhttp3.internal.http2.Huffman get()
-okhttp3.internal.http2.Ping:
-    public final java.util.concurrent.CountDownLatch latch
-    public long received
-    public void <init>()
-    public void cancel()
-    public void receive()
-    public void send()
 okhttp3.internal.http2.PushObserver$1:
     public boolean onData(int,okio.BufferedSource,int,boolean)
     public boolean onHeaders(int,java.util.List,boolean)
     public boolean onRequest(int,java.util.List)
-    public void onReset(int,okhttp3.internal.http2.ErrorCode)
+    public void onReset$enumunboxing$(int,int)
 okhttp3.internal.http2.PushObserver:
     public abstract boolean onData(int,okio.BufferedSource,int,boolean)
     public abstract boolean onHeaders(int,java.util.List,boolean)
     public abstract boolean onRequest(int,java.util.List)
-    public abstract void onReset(int,okhttp3.internal.http2.ErrorCode)
+    public abstract void onReset$enumunboxing$(int,int)
 okhttp3.internal.http2.Settings:
     public void clear()
     public int get(int)
@@ -1814,7 +1864,9 @@ okhttp3.internal.platform.AndroidPlatform$CloseGuard:
     public boolean warnIfOpen(java.lang.Object)
 okhttp3.internal.platform.AndroidPlatform:
     public final java.lang.Class sslParametersClass
+    public final boolean api23IsCleartextTrafficPermitted(java.lang.String,java.lang.Class,java.lang.Object)
     public static okhttp3.internal.platform.Platform buildIfSupported()
+    public static boolean supportsAlpn()
 okhttp3.internal.platform.Jdk9Platform:
     public static okhttp3.internal.platform.Jdk9Platform buildIfSupported()
 okhttp3.internal.platform.JdkWithJettyBootPlatform:
@@ -1827,28 +1879,23 @@ okhttp3.internal.platform.Platform:
     public static byte[] concatLengthPrefixed(java.util.List)
     public static okhttp3.internal.platform.Platform findPlatform()
     public static okhttp3.internal.platform.Platform get()
+    public static boolean isConscryptPreferred()
 okhttp3.internal.publicsuffix.PublicSuffixDatabase:
     public final java.lang.String[] findMatchingRule(java.lang.String[])
     public static okhttp3.internal.publicsuffix.PublicSuffixDatabase get()
     public java.lang.String getEffectiveTldPlusOne(java.lang.String)
-    public final void readTheList()
-okhttp3.internal.tls.CertificateChainCleaner
-okhttp3.internal.tls.DistinguishedNameParser:
-    public final java.lang.String escapedAV()
-    public java.lang.String findMostSpecific(java.lang.String)
-    public final char getUTF8()
-    public final java.lang.String hexAV()
-    public final java.lang.String quotedAV()
+    public final void readTheListUninterruptibly()
+okhttp3.internal.tls.CertificateChainCleaner:
+    public static okhttp3.internal.tls.CertificateChainCleaner get(javax.net.ssl.X509TrustManager)
 okhttp3.internal.tls.OkHostnameVerifier:
+    public boolean verifyHostname(java.lang.String,java.lang.String)
     public final boolean verifyHostname(java.lang.String,java.security.cert.X509Certificate)
     public final boolean verifyIpAddress(java.lang.String,java.security.cert.X509Certificate)
-okhttp3.internal.tls.TrustRootIndex:
-    public static okhttp3.internal.tls.TrustRootIndex get(javax.net.ssl.X509TrustManager)
-    public static varargs okhttp3.internal.tls.TrustRootIndex get(java.security.cert.X509Certificate[])
 okhttp3.internal.ws.RealWebSocket$2:
     public void onFailure(okhttp3.Call,java.io.IOException)
 okhttp3.internal.ws.RealWebSocket:
     public static final synthetic boolean $assertionsDisabled
+    public java.lang.String receivedCloseReason
     public void cancel()
     public synchronized boolean close(int,java.lang.String,long)
     public void connect(okhttp3.OkHttpClient)
@@ -1860,7 +1907,8 @@ okhttp3.internal.ws.RealWebSocket:
     public boolean send(java.lang.String)
     public final synchronized boolean send(okio.ByteString,int)
     public void writePingFrame()
-okhttp3.internal.ws.WebSocketProtocol
+okhttp3.internal.ws.WebSocketProtocol:
+    public static void validateCloseCode(int)
 okhttp3.internal.ws.WebSocketReader$FrameCallback:
     public abstract void onReadClose(int,java.lang.String)
     public abstract void onReadMessage(java.lang.String)
@@ -1869,12 +1917,10 @@ okhttp3.internal.ws.WebSocketReader$FrameCallback:
     public abstract void onReadPong(okio.ByteString)
 okhttp3.internal.ws.WebSocketReader:
     public void processNextFrame()
-    public final void readMessage(okio.Buffer)
+    public final void readMessage()
     public final void readMessageFrame()
-    public void readUntilNonControlFrame()
+    public final void readUntilNonControlFrame()
 okhttp3.internal.ws.WebSocketWriter:
-    public static final synthetic boolean $assertionsDisabled
-    public static void <clinit>()
     public okio.Sink newMessageSink(int,long)
     public void writePing(okio.ByteString)
     public void writePong(okio.ByteString)
@@ -1889,22 +1935,34 @@ okio.Base64:
     public static final byte[] URL_MAP
     public static java.lang.String encode(byte[])
     public static java.lang.String encode(byte[],byte[])
+okio.Buffer$UnsafeCursor:
+    public int next()
 okio.Buffer:
     public okio.Buffer clone()
     public okio.Buffer emitCompleteSegments()
     public byte[] readByteArray()
     public java.lang.String readUtf8(long)
-    public java.lang.String readUtf8LineStrict(long)
     public long size()
     public okio.ByteString snapshot()
     public okio.ByteString snapshot(int)
+    public synthetic bridge okio.BufferedSink write(okio.ByteString)
+    public synthetic bridge okio.BufferedSink write(byte[],int,int)
+    public okio.Buffer writeLong(long)
+    public okio.Buffer writeString(java.lang.String,int,int,java.nio.charset.Charset)
+okio.BufferedSink:
+    public abstract okio.BufferedSink write(okio.ByteString)
+    public abstract okio.BufferedSink write(byte[],int,int)
 okio.ByteString:
     public static int codePointIndexToCharIndex(java.lang.String,int)
     public int compareTo(okio.ByteString)
     public okio.ByteString sha256()
     public final boolean startsWith(okio.ByteString)
+    public byte[] toByteArray()
+okio.ForwardingSink:
+    public void write(okio.Buffer,long)
 okio.ForwardingSource:
     public void close()
+    public final okio.Source delegate()
 okio.ForwardingTimeout:
     public final okio.Timeout delegate()
     public final okio.ForwardingTimeout setDelegate(okio.Timeout)
@@ -1919,11 +1977,12 @@ okio.Okio:
     public static okio.Sink sink(java.io.OutputStream,okio.Timeout)
     public static okio.Source source(java.io.InputStream)
     public static okio.AsyncTimeout timeout(java.net.Socket)
-okio.RealBufferedSource:
-    public java.lang.String readUtf8LineStrict(long)
+okio.RealBufferedSink:
+    public okio.BufferedSink write(okio.ByteString)
 okio.Segment:
     public void compact()
     public okio.Segment split(int)
+    public okio.Segment unsharedCopy()
 okio.SegmentedByteString:
     public okio.ByteString sha256()
 okio.Util:
@@ -1964,6 +2023,12 @@ waste.time.yuketang.ListActivity:
     public final java.lang.String[] getUser_ID()
     public final java.lang.String[] getclass_room()
     public final void update_course()
+waste.time.yuketang.LoginActivity$1:
+    public void onClosed(okhttp3.WebSocket,int,java.lang.String)
+    public void onClosing(okhttp3.WebSocket,int,java.lang.String)
+    public void onFailure(okhttp3.WebSocket,java.lang.Throwable,okhttp3.Response)
+    public void onMessage(okhttp3.WebSocket,java.lang.String)
+    public void onMessage(okhttp3.WebSocket,okio.ByteString)
 waste.time.yuketang.LoginActivity:
     public android.widget.TextView tip
     public static synthetic int access$000(waste.time.yuketang.LoginActivity)

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,6 +24,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import Support.BaseActivity;
 import Support.HttpSupport;
+import Support.LogSupport;
 
 public class ListActivity extends BaseActivity {
     private String cookie,university_id,csrftoken,sessionid,user_id,class_id;
