@@ -5,7 +5,7 @@
 为了避免浪费更多不必要的时间，开发了此软件，可快速刷遍所有视频
 ```
 #### 如何使用
-**首先请先[点击这里](https://gitee.com/updat/save_time/attach_files/1039538/download/app-release.apk)下载并安装程序（仅安卓可以使用）**
+**首先请先[点击这里](https://github.com/12189108/YuKeTang/releases/download/release_v1.2/app-release.apk)下载并安装程序（仅安卓可以使用）**
 
 1.打开程序，出现二维码后截图，**最小化或始终以小窗打开应用**
 
